@@ -1,0 +1,35 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/liuguijianonlinemall?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 0
+    jedis:
+      pool:
+        max-idle: 20
+        max-active: 1024
+        max-wait: 10000
+        min-idle: 0
+    timeout: 10000
+    block-when-exhausted: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+  global-config:
+    key-generator: com.baomidou.mybatisplus.incrementer.KeyGenerator
+multipart:
+  maxFileSize: 100Mb
+  maxRequestSize: 100Mb
