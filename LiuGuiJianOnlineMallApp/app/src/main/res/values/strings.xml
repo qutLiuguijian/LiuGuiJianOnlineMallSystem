@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">LiuGuiJianOnlineMallApp</string>
+    <string name="module_main_home">首页</string>
+    <string name="module_main_classify">分类</string>
+    <string name="module_main_mycart">购物车</string>
+    <string name="module_main_mine">我</string>
+    <string name="module_main_home_mobile">手机数码</string>
+    <string name="module_main_home_man">男士</string>
+    <string name="module_main_home_woman">女士</string>
+    <string name="module_main_home_daily">日用百货</string>
+    <string name="module_main_home_snack">坚果零食</string>
 </resources>
