@@ -5,7 +5,7 @@ android {
     buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "com.lgj.liuguijianonlinemallapp"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 28
         versionCode 11
         versionName "1.1"

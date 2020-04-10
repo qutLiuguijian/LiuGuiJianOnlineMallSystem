@@ -51,9 +51,9 @@ public class MyGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         Goods goods = list.get(i);
-        Glide.with(context).load("").into(myViewHolder.iv_img);
-        myViewHolder.tv_desc.setText("");
-        myViewHolder.tv_price.setText("");
+        Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_img);
+        myViewHolder.tv_desc.setText(goods.getGdesc());
+        myViewHolder.tv_price.setText(goods.getGprice()+"");
     }
 
     @Override
@@ -63,11 +63,39 @@ public class MyGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_desc,tv_price;
         private ImageView iv_img;
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             tv_desc=itemView.findViewById(R.id.tv_desc);
             tv_price=itemView.findViewById(R.id.tv_price);
             iv_img=itemView.findViewById(R.id.iv_img);
+            if (onitemClickListener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int pos = getAdapterPosition();
+                        onitemClickListener.onItemClick(itemView, pos);
+                    }
+                });
+            }
+            if (onitemLongClickListener != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        int pos = getAdapterPosition();
+                        onitemLongClickListener.onItemLongClick(itemView, pos);
+                        return true;
+                    }
+                });
+            }
+            if (onitemFocusChangeClickListener != null) {
+                itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        int pos = getAdapterPosition();
+                        onitemFocusChangeClickListener.onItemFocusChangeListener(itemView, b, pos);
+                    }
+                });
+            }
         }
     }
     public interface OnitemClickListener {

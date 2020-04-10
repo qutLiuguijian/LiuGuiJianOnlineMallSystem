@@ -15,14 +15,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
 import com.lgj.liuguijianonlinemallapp.bean.ServerResult;
+import com.lgj.liuguijianonlinemallapp.bean.User;
 import com.lgj.liuguijianonlinemallapp.utils.PreferencesUtils;
 import com.lgj.liuguijianonlinemallapp.utils.RequestParamConfig;
 import com.ruiwcc.okhttpPlus.exception.OkHttpException;
 import com.ruiwcc.okhttpPlus.request.RequestParams;
 import com.ruiwcc.okhttpPlus.response.ResponseCallback;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,12 +129,14 @@ public class TransitActivity extends Activity {
             switch (msg.what){
                 case 0:
                     Gson gson = new Gson();
-                    ServerResult result = gson.fromJson(msg.obj.toString(), ServerResult.class);
+                    Type type = new TypeToken<ServerResult<User>>() {}.getType();
+                    ServerResult<User> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
+                        User user=result.getData();
                         PreferencesUtils.putString(TransitActivity.this,"isReLogin","no");
-                        PreferencesUtils.putString(TransitActivity.this,"username","yes");
-                        PreferencesUtils.putString(TransitActivity.this,"phone","yes");
-                        PreferencesUtils.putString(TransitActivity.this,"level","yes");
+                        PreferencesUtils.putString(TransitActivity.this,"username",user.getUsername());
+                        PreferencesUtils.putString(TransitActivity.this,"phone",user.getPhone());
+                        PreferencesUtils.putString(TransitActivity.this,"level",user.getLevel());
                     }else {
                         PreferencesUtils.putString(TransitActivity.this,"isReLogin","yes");
                     }

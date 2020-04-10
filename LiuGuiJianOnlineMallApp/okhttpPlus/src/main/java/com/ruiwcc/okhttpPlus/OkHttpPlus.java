@@ -45,7 +45,7 @@ public class OkHttpPlus {
     /**
      * 超时时间
      */
-    private static final int DEFAULT_TIME_OUT = 30; //默认超时时间30s
+    private static final int DEFAULT_TIME_OUT = 300; //默认超时时间30s
 
     private static OkHttpClient mOkHttpClient;
     private static Handler mDeliveryHandler; //进行消息的转发
