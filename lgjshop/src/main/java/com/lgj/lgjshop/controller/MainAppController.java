@@ -9,7 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/app")
@@ -113,9 +115,46 @@ public class MainAppController {
             return new ServerResult(0, "登录成功", list.get(0));
         }
     }
-
-    @RequestMapping(value = "buy", method = RequestMethod.POST)
-    @ApiOperation(value = "下单", notes = "")
+    @RequestMapping(value = "addCar", method = RequestMethod.POST)
+    @ApiOperation(value = "加入购物车", notes = "")
+    public ServerResult addCar(@RequestParam String username
+            , @RequestParam int g_id
+            , @RequestParam int count) {
+        QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uname", username);
+        queryWrapper.eq("m_goodsid", g_id);
+        List<Mycar> list = mycarService.list(queryWrapper);
+        if (list==null||list.size()==0){
+            Mycar mycar=new Mycar();
+            mycar.setUname(username);
+            mycar.setMGoodsid(g_id);
+            mycar.setCount(count);
+            boolean save = mycarService.save(mycar);
+            if (save){
+                return new ServerResult(0, "加入购物车成功");
+            }else {
+                return new ServerResult(0, "加入购物车失败");
+            }
+        }else {
+            Mycar mycar=list.get(0);
+            int new_count=mycar.getCount()+count;
+            mycar.setCount(new_count);
+            boolean b = mycarService.saveOrUpdate(mycar);
+            if (b){
+                return new ServerResult(0, "加入购物车成功");
+            }else {
+                return new ServerResult(0, "加入购物车失败");
+            }
+        }
+    }
+    @RequestMapping(value = "getCar", method = RequestMethod.POST)
+    @ApiOperation(value = "加入购物车", notes = "")
+    public ServerResult getCar(@RequestParam String username) {
+        List<Goods> carGoods = mycarService.getCarGoods(username);
+        return new ServerResult(0, "",carGoods);
+    }
+    @RequestMapping(value = "buyFromCar", method = RequestMethod.POST)
+    @ApiOperation(value = "购物车下单", notes = "")
     public ServerResult isReLogin(@RequestParam String username
             , @RequestParam int g_id
             , @RequestParam int edTime
@@ -140,5 +179,17 @@ public class MainAppController {
         } else {
             return new ServerResult(1, "下单失败，请重试或联系管理员!");
         }
+    }
+    @RequestMapping(value = "getGoodsDetail", method = RequestMethod.POST)
+    @ApiOperation(value = "获取商品详情", notes = "")
+    public ServerResult getGoodsDetail( @RequestParam int id){
+        Goods goods = goodsService.getGoodsDetail(id);
+        List<Map> goodsDetailImg = goodsService.getGoodsDetailImg(id);
+        List<String>imgList=new ArrayList<>();
+        for (Map mp:goodsDetailImg){
+            imgList.add(mp.get("imgurl").toString());
+        }
+        goods.setImgurl(imgList);
+        return new ServerResult(0,"",goods);
     }
 }
