@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class GsonUtil {
 
-	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	public static final String DATE_FORMAT = "yyyy-MM-module_popupwindow_decrease_normal HH:mm:ss";
 
 	public static Gson getGson() {
 		return new GsonBuilder().serializeNulls().setDateFormat(DATE_FORMAT)

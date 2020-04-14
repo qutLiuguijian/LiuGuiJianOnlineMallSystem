@@ -22,4 +22,16 @@ public class RequestParamConfig {
                              ResponseCallback callback){
         OkHttpPlus.post(host+"/register",params,callback);
     }
+    public static void getGoodsDetail(RequestParams params,
+                                ResponseCallback callback){
+        OkHttpPlus.post(host+"/getGoodsDetail",params,callback);
+    }
+    public static void addCar(RequestParams params,
+                                      ResponseCallback callback){
+        OkHttpPlus.post(host+"/addCar",params,callback);
+    }
+    public static void getCar(RequestParams params,
+                              ResponseCallback callback){
+        OkHttpPlus.post(host+"/getCar",params,callback);
+    }
 }

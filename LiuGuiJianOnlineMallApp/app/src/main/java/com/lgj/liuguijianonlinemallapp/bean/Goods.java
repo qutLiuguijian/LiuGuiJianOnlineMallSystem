@@ -1,36 +1,46 @@
 package com.lgj.liuguijianonlinemallapp.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Goods implements Serializable {
 
     /**
      * id : 1
-     * gdesc : 三合一数据线一拖三充电线
-     * gprice : 45.6
-     * gname : 三合一数据线
-     * gimage : https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1058509656,3544942575&fm=26&gp=0.jpg
-     * gshopId : 1
-     * gclassify : 手机数码
-     * gdiscountPrice : 56.35
+     * sname : 一号店
+     * saddress : 山东省济宁市泗水县土洞村
+     * imgurl : ["https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1058509656,3544942575&fm=26&gp=0.jpg","https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1058509656,3544942575&fm=26&gp=0.jpg"]
      * gfirstClassify : 家用电器
-     * gsecondClassify : 数码电器
      * gthirdClassify : 数码电器
+     * gdiscountPrice : 56.35
+     * gsecondClassify : 数码电器
+     * gdesc : 三合一数据线一拖三充电线
+     * gshopId : 1
+     * gprice : 45.6
+     * gimage : https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1058509656,3544942575&fm=26&gp=0.jpg
+     * gclassify : 手机数码
+     * gname : 三合一数据线
      */
 
-    private Integer id;
-    private String gdesc;
-    private double gprice;
-    private String gname;
-    private String gimage;
-    private Integer gshopId;
-    private String gclassify;
-    private double gdiscountPrice;
+    private int id;
+    private String sname;
+    private String saddress;
     private String gfirstClassify;
-    private String gsecondClassify;
     private String gthirdClassify;
+    private double gdiscountPrice;
+    private String gsecondClassify;
+    private String gdesc;
+    private int gshopId;
+    private double gprice;
+    private String gimage;
+    private String gclassify;
+    private String gname;
+    private List<String> imgurl;
+    private String uname;
+    private int count;
+    private   boolean isChecked=false;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -38,60 +48,20 @@ public class Goods implements Serializable {
         this.id = id;
     }
 
-    public String getGdesc() {
-        return gdesc;
+    public String getSname() {
+        return sname;
     }
 
-    public void setGdesc(String gdesc) {
-        this.gdesc = gdesc;
+    public void setSname(String sname) {
+        this.sname = sname;
     }
 
-    public double getGprice() {
-        return gprice;
+    public String getSaddress() {
+        return saddress;
     }
 
-    public void setGprice(double gprice) {
-        this.gprice = gprice;
-    }
-
-    public String getGname() {
-        return gname;
-    }
-
-    public void setGname(String gname) {
-        this.gname = gname;
-    }
-
-    public String getGimage() {
-        return gimage;
-    }
-
-    public void setGimage(String gimage) {
-        this.gimage = gimage;
-    }
-
-    public Integer getGshopId() {
-        return gshopId;
-    }
-
-    public void setGshopId(int gshopId) {
-        this.gshopId = gshopId;
-    }
-
-    public String getGclassify() {
-        return gclassify;
-    }
-
-    public void setGclassify(String gclassify) {
-        this.gclassify = gclassify;
-    }
-
-    public double getGdiscountPrice() {
-        return gdiscountPrice;
-    }
-
-    public void setGdiscountPrice(double gdiscountPrice) {
-        this.gdiscountPrice = gdiscountPrice;
+    public void setSaddress(String saddress) {
+        this.saddress = saddress;
     }
 
     public String getGfirstClassify() {
@@ -102,6 +72,22 @@ public class Goods implements Serializable {
         this.gfirstClassify = gfirstClassify;
     }
 
+    public String getGthirdClassify() {
+        return gthirdClassify;
+    }
+
+    public void setGthirdClassify(String gthirdClassify) {
+        this.gthirdClassify = gthirdClassify;
+    }
+
+    public double getGdiscountPrice() {
+        return gdiscountPrice;
+    }
+
+    public void setGdiscountPrice(double gdiscountPrice) {
+        this.gdiscountPrice = gdiscountPrice;
+    }
+
     public String getGsecondClassify() {
         return gsecondClassify;
     }
@@ -110,11 +96,83 @@ public class Goods implements Serializable {
         this.gsecondClassify = gsecondClassify;
     }
 
-    public String getGthirdClassify() {
-        return gthirdClassify;
+    public String getGdesc() {
+        return gdesc;
     }
 
-    public void setGthirdClassify(String gthirdClassify) {
-        this.gthirdClassify = gthirdClassify;
+    public void setGdesc(String gdesc) {
+        this.gdesc = gdesc;
+    }
+
+    public int getGshopId() {
+        return gshopId;
+    }
+
+    public void setGshopId(int gshopId) {
+        this.gshopId = gshopId;
+    }
+
+    public double getGprice() {
+        return gprice;
+    }
+
+    public void setGprice(double gprice) {
+        this.gprice = gprice;
+    }
+
+    public String getGimage() {
+        return gimage;
+    }
+
+    public void setGimage(String gimage) {
+        this.gimage = gimage;
+    }
+
+    public String getGclassify() {
+        return gclassify;
+    }
+
+    public void setGclassify(String gclassify) {
+        this.gclassify = gclassify;
+    }
+
+    public String getGname() {
+        return gname;
+    }
+
+    public void setGname(String gname) {
+        this.gname = gname;
+    }
+
+    public List<String> getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(List<String> imgurl) {
+        this.imgurl = imgurl;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

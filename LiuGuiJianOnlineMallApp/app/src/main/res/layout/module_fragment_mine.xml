@@ -66,7 +66,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:src="@drawable/b9g"
+                        android:src="@drawable/module_mine_pay"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
                     <TextView
@@ -81,7 +81,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:src="@drawable/b9d"
+                        android:src="@drawable/module_mine_receive"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
                     <TextView
@@ -97,7 +97,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:src="@drawable/b9h"
+                        android:src="@drawable/module_mine_assess"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
                     <TextView
@@ -113,7 +113,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:src="@drawable/b9e"
+                        android:src="@drawable/module_mine_service"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
                     <TextView
@@ -129,7 +129,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <ImageView
-                        android:src="@drawable/bf0"
+                        android:src="@drawable/module_mine_buy"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
                     <TextView

@@ -48,10 +48,10 @@ public class MainActivity extends FragmentActivity {
         iv_image = view.findViewById(R.id.iv_image);
         tv_mark = view.findViewById(R.id.tv_mark);
         iv_image.setImageResource(id);
-        if (tag == 2) {
-            tv_mark.setVisibility(View.VISIBLE);
-            tv_mark.setText("2");
-        }
+//        if (tag == 2) {
+//            tv_mark.setVisibility(View.VISIBLE);
+//            tv_mark.setText("2");
+//        }
         return view;
     }
 }

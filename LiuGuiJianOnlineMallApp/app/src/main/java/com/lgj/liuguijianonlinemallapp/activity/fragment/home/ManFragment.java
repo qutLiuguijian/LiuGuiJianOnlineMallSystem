@@ -51,7 +51,7 @@ public class ManFragment extends Fragment {
             @Override
             public void onItemClick(View view, int postion) {
                 Intent intent=new Intent(getActivity(), GoodsDetailActivity.class);
-                intent.putExtra("id","");
+                intent.putExtra("id",goods.get(postion).getId());
                 startActivity(intent);
             }
         });
