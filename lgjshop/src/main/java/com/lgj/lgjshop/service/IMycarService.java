@@ -1,7 +1,10 @@
 package com.lgj.lgjshop.service;
 
+import com.lgj.lgjshop.entity.Goods;
 import com.lgj.lgjshop.entity.Mycar;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-04-01
  */
 public interface IMycarService extends IService<Mycar> {
-
+    List<Goods> getCarGoods(String uname);
 }
