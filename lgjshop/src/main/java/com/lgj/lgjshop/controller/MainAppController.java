@@ -115,6 +115,7 @@ public class MainAppController {
             return new ServerResult(0, "登录成功", list.get(0));
         }
     }
+
     @RequestMapping(value = "addCar", method = RequestMethod.POST)
     @ApiOperation(value = "加入购物车", notes = "")
     public ServerResult addCar(@RequestParam String username
@@ -124,42 +125,45 @@ public class MainAppController {
         queryWrapper.eq("uname", username);
         queryWrapper.eq("m_goodsid", g_id);
         List<Mycar> list = mycarService.list(queryWrapper);
-        if (list==null||list.size()==0){
-            Mycar mycar=new Mycar();
+        if (list == null || list.size() == 0) {
+            Mycar mycar = new Mycar();
             mycar.setUname(username);
             mycar.setMGoodsid(g_id);
             mycar.setCount(count);
             boolean save = mycarService.save(mycar);
-            if (save){
+            if (save) {
                 return new ServerResult(0, "加入购物车成功");
-            }else {
+            } else {
                 return new ServerResult(0, "加入购物车失败");
             }
-        }else {
-            Mycar mycar=list.get(0);
-            int new_count=mycar.getCount()+count;
+        } else {
+            Mycar mycar = list.get(0);
+            int new_count = mycar.getCount() + count;
             mycar.setCount(new_count);
             boolean b = mycarService.saveOrUpdate(mycar);
-            if (b){
+            if (b) {
                 return new ServerResult(0, "加入购物车成功");
-            }else {
+            } else {
                 return new ServerResult(0, "加入购物车失败");
             }
         }
     }
+
     @RequestMapping(value = "getCar", method = RequestMethod.POST)
     @ApiOperation(value = "加入购物车", notes = "")
     public ServerResult getCar(@RequestParam String username) {
         List<Goods> carGoods = mycarService.getCarGoods(username);
-        return new ServerResult(0, "",carGoods);
+        return new ServerResult(0, "", carGoods);
     }
+
     @RequestMapping(value = "buyFromCar", method = RequestMethod.POST)
     @ApiOperation(value = "购物车下单", notes = "")
-    public ServerResult isReLogin(@RequestParam String username
+    public ServerResult buyFromCar(@RequestParam String username
             , @RequestParam int g_id
             , @RequestParam int edTime
             , @RequestParam String shopAddress
-            , @RequestParam String userAddress) {
+            , @RequestParam String userAddress
+            , @RequestParam int count) {
         QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("my_goodsid", g_id);
         boolean remove = mycarService.remove(queryWrapper);
@@ -170,6 +174,8 @@ public class MainAppController {
             goodsorder.setEdtime(edTime);
             goodsorder.setShopaddresss(shopAddress);
             goodsorder.setUseraddress(userAddress);
+            goodsorder.setCount(count);
+            goodsorder.setState(0);
             boolean save = goodsorderService.save(goodsorder);
             if (save) {
                 return new ServerResult(0, "下单成功");
@@ -180,16 +186,65 @@ public class MainAppController {
             return new ServerResult(1, "下单失败，请重试或联系管理员!");
         }
     }
+
+    @RequestMapping(value = "buyFromDetail", method = RequestMethod.POST)
+    @ApiOperation(value = "立即购买", notes = "")
+    public ServerResult buyFromDetail(@RequestParam String username
+            , @RequestParam int g_id
+            , @RequestParam int edTime
+            , @RequestParam String shopAddress
+            , @RequestParam String userAddress
+            , @RequestParam int count) {
+        Goodsorder goodsorder = new Goodsorder();
+        goodsorder.setUname(username);
+        goodsorder.setGId(g_id);
+        goodsorder.setEdtime(edTime);
+        goodsorder.setShopaddresss(shopAddress);
+        goodsorder.setUseraddress(userAddress);
+        goodsorder.setCount(count);
+        goodsorder.setState(0);
+        boolean save = goodsorderService.save(goodsorder);
+        if (save) {
+            return new ServerResult(0, "下单成功");
+        } else {
+            return new ServerResult(1, "下单失败，请重试或联系管理员!");
+        }
+
+    }
+
+    @RequestMapping(value = "updateOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "更新下单 0 待付款 1 待发货 2 待收货 3 待评价 4 售后/退款", notes = "")
+    public ServerResult updateOrder(@RequestParam int id, @RequestParam int state) {
+        Goodsorder goodsorder = goodsorderService.getById(id);
+        goodsorder.setState(state);
+        boolean b = goodsorderService.saveOrUpdate(goodsorder);
+        if (b) {
+            return new ServerResult(0, "成功");
+        } else {
+            return new ServerResult(1, "失败，请重试或联系管理员!");
+        }
+    }
+    @RequestMapping(value = "deleteOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "删除下单 只有待付款和退款或售后可删除", notes = "")
+    public ServerResult deleteOrder(@RequestParam int id) {
+        boolean b = goodsorderService.removeById(id);
+        if (b) {
+            return new ServerResult(0, "成功");
+        } else {
+            return new ServerResult(1, "失败，请重试或联系管理员!");
+        }
+    }
+
     @RequestMapping(value = "getGoodsDetail", method = RequestMethod.POST)
     @ApiOperation(value = "获取商品详情", notes = "")
-    public ServerResult getGoodsDetail( @RequestParam int id){
+    public ServerResult getGoodsDetail(@RequestParam int id) {
         Goods goods = goodsService.getGoodsDetail(id);
         List<Map> goodsDetailImg = goodsService.getGoodsDetailImg(id);
-        List<String>imgList=new ArrayList<>();
-        for (Map mp:goodsDetailImg){
+        List<String> imgList = new ArrayList<>();
+        for (Map mp : goodsDetailImg) {
             imgList.add(mp.get("imgurl").toString());
         }
         goods.setImgurl(imgList);
-        return new ServerResult(0,"",goods);
+        return new ServerResult(0, "", goods);
     }
 }

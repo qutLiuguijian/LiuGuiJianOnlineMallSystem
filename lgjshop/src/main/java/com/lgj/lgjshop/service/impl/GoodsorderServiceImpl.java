@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author 
- * @since 2020-04-01
+ * @since 2020-04-15
  */
 @Service
 public class GoodsorderServiceImpl extends ServiceImpl<GoodsorderMapper, Goodsorder> implements IGoodsorderService {
