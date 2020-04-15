@@ -81,7 +81,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
     }
 
     private void bind() {
-        adapter = new CarGoodsRecyclerViewAdapter(getContext(), goodsList);
+        adapter = new CarGoodsRecyclerViewAdapter(getContext(),handler, goodsList);
         rv_goods.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_goods.setAdapter(adapter);
         checkbox_all.setOnClickListener(this);
@@ -125,10 +125,33 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
                         adapter.notifyDataSetChanged();
                     }
                     break;
-
+                case 1:
+                    pay();
+                    break;
             }
         }
     };
+
+    private void pay() {
+        int buy_count=0;
+        double money=0;
+        checkbox_all.setChecked(true);
+        for (int i=0;i<goodsList.size();i++){
+            if (goodsList.get(i).isChecked()){
+                buy_count++;
+                money=money+goodsList.get(i).getGprice()*goodsList.get(i).getCount();
+            }else {
+                checkbox_all.setChecked(false);
+            }
+        }
+        if (buy_count==0){
+            tv_allpay.setText("0.00");
+            btn_topay.setText("去结算");
+        }else {
+            tv_allpay.setText(money+"");
+            btn_topay.setText("去结算("+buy_count+")");
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -137,10 +160,16 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.checkbox_all:
                 if (checkbox_all.isChecked()){
-
+                    for (int i=0;i<goodsList.size();i++){
+                        goodsList.get(i).setChecked(true);
+                    }
                 }else {
-
+                    for (int i=0;i<goodsList.size();i++){
+                        goodsList.get(i).setChecked(false);
+                    }
                 }
+                pay();
+                adapter.notifyDataSetChanged();
                 break;
         }
     }

@@ -83,7 +83,7 @@
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5000.00" />
+                    android:text="0.00" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +101,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/module_detail_btn_car_pressed"
-                        android:text="去结算(5)" />
+                        android:text="去结算" />
                 </RelativeLayout>
 
             </LinearLayout>

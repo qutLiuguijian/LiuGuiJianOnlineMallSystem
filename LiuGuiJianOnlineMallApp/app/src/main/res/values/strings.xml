@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LiuGuiJianOnlineMallApp</string>
+    <string name="app_name">lgj网上商城</string>
     <string name="module_main_home">首页</string>
     <string name="module_main_classify">分类</string>
     <string name="module_main_mycart">购物车</string>
