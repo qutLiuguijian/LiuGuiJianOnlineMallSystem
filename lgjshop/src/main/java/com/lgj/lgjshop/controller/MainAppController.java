@@ -34,6 +34,15 @@ public class MainAppController {
     @Autowired
     private JedisUtil redisService;
 
+    @Autowired
+    private IFirstclassifyService firstclassifyService;
+
+    @Autowired
+    private ISecondclassifyService secondclassifyService;
+
+    @Autowired
+    private IThirdclassifyService thirdclassifyService;
+
     @RequestMapping(value = "getGoodsByClassify", method = RequestMethod.POST)
     @ApiOperation(value = "通过分类查询商品列表", notes = "")
     public ServerResult getGoodsByClassify(@RequestParam String classify) {
@@ -150,7 +159,7 @@ public class MainAppController {
     }
 
     @RequestMapping(value = "getCar", method = RequestMethod.POST)
-    @ApiOperation(value = "加入购物车", notes = "")
+    @ApiOperation(value = "获得购物车商品", notes = "")
     public ServerResult getCar(@RequestParam String username) {
         List<Goods> carGoods = mycarService.getCarGoods(username);
         return new ServerResult(0, "", carGoods);
@@ -224,6 +233,7 @@ public class MainAppController {
             return new ServerResult(1, "失败，请重试或联系管理员!");
         }
     }
+
     @RequestMapping(value = "deleteOrder", method = RequestMethod.POST)
     @ApiOperation(value = "删除下单 只有待付款和退款或售后可删除", notes = "")
     public ServerResult deleteOrder(@RequestParam int id) {
@@ -233,6 +243,57 @@ public class MainAppController {
         } else {
             return new ServerResult(1, "失败，请重试或联系管理员!");
         }
+    }
+
+    @RequestMapping(value = "getAllOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "获得全部下单", notes = "")
+    public ServerResult getAllOrder(@RequestParam String uname) {
+        QueryWrapper<Goodsorder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uname", uname);
+        List<Goodsorder> list = goodsorderService.list(queryWrapper);
+        return new ServerResult(0, "成功", list);
+    }
+
+    @RequestMapping(value = "classify", method = RequestMethod.POST)
+    @ApiOperation(value = "分类", notes = "")
+    public ServerResult classify() {
+        List<Firstclassify> list = firstclassifyService.list();
+        List<Secondclassify> list2 = secondclassifyService.list();
+        List<Thirdclassify> list3 = thirdclassifyService.list();
+        List<Classify>classifyList=new ArrayList<>();
+        for (Thirdclassify thirdclassify:list3){
+            Classify classify=new Classify();
+            classify.setId(thirdclassify.getSId());
+            classify.setName(thirdclassify.getThirdClassify());
+            classifyList.add(classify);
+        }
+        List<Classify>classifyList2=new ArrayList<>();
+        for (Secondclassify secondclassify:list2){
+            Classify classify=new Classify();
+            classify.setId(secondclassify.getFId());
+            classify.setName(secondclassify.getSecondClassify());
+            classify.childName=new ArrayList<>();
+            for (Classify classify1:classifyList){
+                if (classify1.getId()==secondclassify.getId()){
+                    classify.childName.add(classify1);
+                }
+            }
+            classifyList2.add(classify);
+        }
+        List<Classify>classifyList3=new ArrayList<>();
+        for (Firstclassify firstclassify:list){
+            Classify classify=new Classify();
+            classify.setId(firstclassify.getId());
+            classify.setName(firstclassify.getFirstClassify());
+            classify.childName=new ArrayList<>();
+            for (Classify classify1:classifyList2){
+                if (classify1.getId()==firstclassify.getId()){
+                    classify.childName.add(classify1);
+                }
+            }
+            classifyList3.add(classify);
+        }
+        return new ServerResult(0, "成功", classifyList3);
     }
 
     @RequestMapping(value = "getGoodsDetail", method = RequestMethod.POST)
