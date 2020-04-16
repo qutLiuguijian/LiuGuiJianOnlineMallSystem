@@ -9,4 +9,10 @@
     <string name="module_main_home_woman">女士</string>
     <string name="module_main_home_daily">日用百货</string>
     <string name="module_main_home_snack">坚果零食</string>
+    <string name="module_order_all">全部</string>
+    <string name="module_order_pay">待付款</string>
+    <string name="module_order_send">待发货</string>
+    <string name="module_order_takeover">待收货</string>
+    <string name="module_order_assess">待评价</string>
+    <string name="module_order_drawback">退款/售后</string>
 </resources>
