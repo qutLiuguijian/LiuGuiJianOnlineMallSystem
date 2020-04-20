@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgj.lgjshop.mapper.GoodsorderMapper">
-
+    <select id="getOrderByState" resultType="java.util.Map">
+        select g.*,p.uname,p.saddress,p.address,p.count,p.state,p.edtime from goodsorder as p join goods as g on p.g_id=g.id
+         where p.uname=#{uname} and p.state=#{state}
+    </select>
+    <select id="getOrderAll" resultType="java.util.Map">
+        select g.*,p.uname,p.saddress,p.address,p.count,p.state,p.edtime from goodsorder as p join goods as g on p.g_id=g.id
+         where p.uname=#{uname}
+    </select>
 </mapper>

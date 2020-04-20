@@ -29,7 +29,7 @@ public class Goods implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id",type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
 
     private String gName;
@@ -61,5 +61,11 @@ public class Goods implements Serializable {
     private transient String uname;
 
     private transient Integer count;
+
+    private transient Integer state;
+
+    private transient Integer edtime;
+
+    private transient String address;
 
 }

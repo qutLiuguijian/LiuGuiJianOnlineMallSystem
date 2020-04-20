@@ -170,7 +170,6 @@ public class MainAppController {
     public ServerResult buyFromCar(@RequestParam String username
             , @RequestParam int g_id
             , @RequestParam int edTime
-            , @RequestParam String shopAddress
             , @RequestParam String userAddress
             , @RequestParam int count) {
         QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
@@ -181,7 +180,8 @@ public class MainAppController {
             goodsorder.setUname(username);
             goodsorder.setGId(g_id);
             goodsorder.setEdtime(edTime);
-            goodsorder.setShopaddresss(shopAddress);
+            Goods goods=goodsService.getGoodsDetail(g_id);
+            goodsorder.setShopaddresss(goods.getSaddress());
             goodsorder.setUseraddress(userAddress);
             goodsorder.setCount(count);
             goodsorder.setState(0);
@@ -201,14 +201,14 @@ public class MainAppController {
     public ServerResult buyFromDetail(@RequestParam String username
             , @RequestParam int g_id
             , @RequestParam int edTime
-            , @RequestParam String shopAddress
             , @RequestParam String userAddress
             , @RequestParam int count) {
         Goodsorder goodsorder = new Goodsorder();
         goodsorder.setUname(username);
         goodsorder.setGId(g_id);
         goodsorder.setEdtime(edTime);
-        goodsorder.setShopaddresss(shopAddress);
+        Goods goods=goodsService.getGoodsDetail(g_id);
+        goodsorder.setShopaddresss(goods.getSaddress());
         goodsorder.setUseraddress(userAddress);
         goodsorder.setCount(count);
         goodsorder.setState(0);
@@ -252,6 +252,18 @@ public class MainAppController {
         queryWrapper.eq("uname", uname);
         List<Goodsorder> list = goodsorderService.list(queryWrapper);
         return new ServerResult(0, "成功", list);
+    }
+    @RequestMapping(value = "getAllOrderByUAS", method = RequestMethod.POST)
+    @ApiOperation(value = "通过用户名和状态获得全部下单", notes = "")
+    public ServerResult getAllOrderByUAS(@RequestParam String uname,int  state) {
+        List<Goods> orderAll;
+        if (state<0){
+            orderAll = goodsorderService.getOrderAll(uname);
+        }else {
+            orderAll = goodsorderService.getOrderByState(uname,state);
+        }
+
+        return new ServerResult(0, "成功", orderAll);
     }
 
     @RequestMapping(value = "classify", method = RequestMethod.POST)
