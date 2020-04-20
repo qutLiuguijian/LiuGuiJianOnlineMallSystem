@@ -60,6 +60,7 @@
                 android:layout_height="match_parent"
                 >
                 <LinearLayout
+                    android:id="@+id/ll_pay"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
@@ -75,6 +76,23 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/ll_send"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <ImageView
+                        android:src="@drawable/module_mine_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp" />
+                    <TextView
+                        android:text="待发货"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_takeover"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
@@ -91,6 +109,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_assess"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
@@ -106,23 +125,10 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/module_mine_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
-                    <TextView
-                        android:text="退换/售后"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+
 
                 <LinearLayout
+                    android:id="@+id/ll_all"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
