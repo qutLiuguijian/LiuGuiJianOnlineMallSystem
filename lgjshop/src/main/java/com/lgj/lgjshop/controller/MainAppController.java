@@ -181,8 +181,8 @@ public class MainAppController {
             goodsorder.setGId(g_id);
             goodsorder.setEdtime(edTime);
             Goods goods=goodsService.getGoodsDetail(g_id);
-            goodsorder.setShopaddresss(goods.getSaddress());
-            goodsorder.setUseraddress(userAddress);
+            goodsorder.setSaddress(goods.getSaddress());
+            goodsorder.setAddress(userAddress);
             goodsorder.setCount(count);
             goodsorder.setState(0);
             boolean save = goodsorderService.save(goodsorder);
@@ -208,8 +208,8 @@ public class MainAppController {
         goodsorder.setGId(g_id);
         goodsorder.setEdtime(edTime);
         Goods goods=goodsService.getGoodsDetail(g_id);
-        goodsorder.setShopaddresss(goods.getSaddress());
-        goodsorder.setUseraddress(userAddress);
+        goodsorder.setSaddress(goods.getSaddress());
+        goodsorder.setAddress(userAddress);
         goodsorder.setCount(count);
         goodsorder.setState(0);
         boolean save = goodsorderService.save(goodsorder);
@@ -223,7 +223,7 @@ public class MainAppController {
 
     @RequestMapping(value = "updateOrder", method = RequestMethod.POST)
     @ApiOperation(value = "更新下单 0 待付款 1 待发货 2 待收货 3 待评价 4 售后/退款", notes = "")
-    public ServerResult updateOrder(@RequestParam int id, @RequestParam int state) {
+    public ServerResult updateOrder(@RequestParam int id,@RequestParam int state) {
         Goodsorder goodsorder = goodsorderService.getById(id);
         goodsorder.setState(state);
         boolean b = goodsorderService.saveOrUpdate(goodsorder);
