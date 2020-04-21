@@ -8,8 +8,11 @@
         on p.g_id=g.id
          where p.uname=#{uname} and p.state=#{state}
     </select>
-    <select id="getOrderAll" resultType="com.lgj.lgjshop.entity.Goods">
-        select g.*,p.uname,p.saddress,p.address,p.count,p.state,p.edtime from goodsorder as p join goods as g on p.g_id=g.id
+    <select id="getOrderAll" resultType="com.lgj.lgjshop.entity.Goodsorder">
+       select p.*,g.* from goodsorder as p join
+        (select a.*,b.sname,b.saddress from goods
+        as a join gshop as b on a.g_shop_id=b.id) as g
+        on p.g_id=g.id
          where p.uname=#{uname}
     </select>
 </mapper>
