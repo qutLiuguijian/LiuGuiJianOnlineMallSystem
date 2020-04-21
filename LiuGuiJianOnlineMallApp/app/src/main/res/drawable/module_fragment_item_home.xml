@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_selected="true" android:drawable="@drawable/module_fragment_item_home_selceted"></item>
-    <item android:state_selected="false" android:drawable="@drawable/moude_fragment_item_home_normal"></item>
+    <item android:state_selected="false" android:drawable="@drawable/moudle_fragment_item_home_normal"></item>
 </selector>

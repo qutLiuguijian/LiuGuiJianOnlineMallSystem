@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
     private CheckBox checkbox_all;
     private TextView tv_allpay;
     private Button btn_topay;
+    private RelativeLayout rl_footer;
     private CarGoodsRecyclerViewAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
 
@@ -93,14 +95,18 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
         checkbox_all = view.findViewById(R.id.checkbox_all);
         tv_allpay = view.findViewById(R.id.tv_allpay);
         btn_topay = view.findViewById(R.id.btn_topay);
+        rl_footer=view.findViewById(R.id.rl_footer);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 300) {
-            bind();
-            loadData();
+            if (resultCode==100){
+                bind();
+                loadData();
+            }
+
         }
     }
 
@@ -123,6 +129,9 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
                         goodsList.clear();
                         goodsList.addAll(result.getData());
                         adapter.notifyDataSetChanged();
+                        if (goodsList.size()>0){
+                            rl_footer.setVisibility(View.VISIBLE);
+                        }
                     }
                     break;
                 case 1:

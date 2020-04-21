@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
 import com.lgj.liuguijianonlinemallapp.activity.GoodsDetailActivity;
 import com.lgj.liuguijianonlinemallapp.adapter.MyGoodsRecyclerViewAdapter;
@@ -25,6 +26,7 @@ import com.ruiwcc.okhttpPlus.exception.OkHttpException;
 import com.ruiwcc.okhttpPlus.request.RequestParams;
 import com.ruiwcc.okhttpPlus.response.ResponseCallback;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +60,7 @@ public class WomanFragment extends Fragment {
     }
     private void loadData(){
         Map<String, String> map = new HashMap<>();
-        map.put("classify",  "手机数码");
+        map.put("classify",  "女士");
         RequestParams params = new RequestParams(map);
         RequestParamConfig.getGoodsByClassify(params, new ResponseCallback() {
             @Override
@@ -79,7 +81,15 @@ public class WomanFragment extends Fragment {
             switch (msg.what){
                 case 0:
                     Gson gson = new Gson();
-                    ServerResult result = gson.fromJson(msg.obj.toString(), ServerResult.class);
+                    Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
+                    ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
+                    if (result.getRetCode()==0){
+                        if (result.getData()!=null){
+                            goods.clear();
+                            goods.addAll(result.getData());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
                     break;
             }
         }

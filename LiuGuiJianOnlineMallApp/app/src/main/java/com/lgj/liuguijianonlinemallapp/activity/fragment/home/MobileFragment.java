@@ -89,9 +89,11 @@ public class MobileFragment extends Fragment {
                     Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
                     ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
-                        goods.clear();
-                        goods.addAll(result.getData());
-                        adapter.notifyDataSetChanged();
+                        if (result.getData()!=null){
+                            goods.clear();
+                            goods.addAll(result.getData());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                     break;
             }

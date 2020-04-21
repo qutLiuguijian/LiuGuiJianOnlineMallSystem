@@ -31,6 +31,7 @@ public class Goods implements Serializable {
     private String gsecondClassify;
     private String gdesc;
     private int gshopId;
+    private int gid;
     private double gprice;
     private String gimage;
     private String gclassify;
@@ -39,6 +40,10 @@ public class Goods implements Serializable {
     private String uname;
     private int count;
     private   boolean isChecked=false;
+    private  Integer state;
+    private  Integer edtime;
+    private  String address;
+
 
     public int getId() {
         return id;
@@ -174,5 +179,37 @@ public class Goods implements Serializable {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Integer getEdtime() {
+        return edtime;
+    }
+
+    public void setEdtime(Integer edtime) {
+        this.edtime = edtime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getGid() {
+        return gid;
+    }
+
+    public void setGid(int gid) {
+        this.gid = gid;
     }
 }

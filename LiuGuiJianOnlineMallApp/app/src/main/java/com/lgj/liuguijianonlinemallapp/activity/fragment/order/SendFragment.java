@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -20,8 +21,10 @@ import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
 import com.lgj.liuguijianonlinemallapp.activity.GoodsDetailActivity;
 import com.lgj.liuguijianonlinemallapp.adapter.MyGoodsRecyclerViewAdapter;
+import com.lgj.liuguijianonlinemallapp.adapter.OrderGoodsRecyclerViewAdapter;
 import com.lgj.liuguijianonlinemallapp.bean.Goods;
 import com.lgj.liuguijianonlinemallapp.bean.ServerResult;
+import com.lgj.liuguijianonlinemallapp.utils.PreferencesUtils;
 import com.lgj.liuguijianonlinemallapp.utils.RequestParamConfig;
 import com.ruiwcc.okhttpPlus.exception.OkHttpException;
 import com.ruiwcc.okhttpPlus.request.RequestParams;
@@ -36,27 +39,34 @@ import java.util.Map;
 public class SendFragment extends Fragment {
     private RecyclerView rv_send;
     private List<Goods> goods=new ArrayList();
-    private MyGoodsRecyclerViewAdapter adapter;
+    private OrderGoodsRecyclerViewAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.module_fragment_send, container, false);
         init(view);
-        loadData();
         return view;
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            handler.sendEmptyMessage(1);
+        }
     }
     private void init(View view){
         rv_send=view.findViewById(R.id.rv_send);
-        adapter=new MyGoodsRecyclerViewAdapter(getContext(),goods);
-        rv_send.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        adapter=new OrderGoodsRecyclerViewAdapter(getContext(),goods,handler);
+        rv_send.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_send.setAdapter(adapter);
     }
-    private void loadData(){
+    public void loadData(){
         Log.i("kkkkkkkk","kk");
         Map<String, String> map = new HashMap<>();
-        map.put("classify",  "手机数码");
+        map.put("uname",  PreferencesUtils.getString(getActivity(), "username"));
+        map.put("state",  "1");
         RequestParams params = new RequestParams(map);
-        RequestParamConfig.getGoodsByClassify(params, new ResponseCallback() {
+        RequestParamConfig.getAllOrderByUAS(params, new ResponseCallback() {
             @Override
             public void onSuccess(Object responseObj) {
                 Log.i("kkkkkkkk",responseObj.toString());
@@ -80,10 +90,15 @@ public class SendFragment extends Fragment {
                     Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
                     ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
-                        goods.clear();
-                        goods.addAll(result.getData());
-                        adapter.notifyDataSetChanged();
+                        if (result.getData()!=null){
+                            goods.clear();
+                            goods.addAll(result.getData());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
+                    break;
+                case 1:
+                    loadData();
                     break;
             }
         }

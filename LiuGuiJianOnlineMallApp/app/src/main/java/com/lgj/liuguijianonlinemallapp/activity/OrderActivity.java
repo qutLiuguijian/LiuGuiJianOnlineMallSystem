@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class OrderActivity extends FragmentActivity {
     private ViewPager vp_content;
     private TabLayout tl_daohang;
     private TextView tv_tltle;
+    private ImageView iv_order_back;
     private int[] tabTitle = {R.string.module_order_all, R.string.module_order_pay,
             R.string.module_order_send, R.string.module_order_takeover,
             R.string.module_order_assess, R.string.module_order_drawback};
@@ -77,6 +79,13 @@ public class OrderActivity extends FragmentActivity {
         tl_daohang = findViewById(R.id.tl_order_daohang);
         vp_content = findViewById(R.id.vp_order_content);
         tv_tltle = findViewById(R.id.tv_tltle);
+        iv_order_back=findViewById(R.id.iv_order_back);
+        iv_order_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (allFragment == null) {
             allFragment = new AllFragment();
             fragments.add(allFragment);

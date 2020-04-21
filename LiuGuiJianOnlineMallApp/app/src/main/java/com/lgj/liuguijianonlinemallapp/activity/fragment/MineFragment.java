@@ -36,7 +36,10 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==100){
-            ctl_loginName.setTitle(data.getStringExtra("uname"));
+            if (resultCode==100){
+                ctl_loginName.setTitle(data.getStringExtra("uname"));
+            }
+
         }
     }
 
@@ -98,12 +101,12 @@ public class MineFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.ll_assess:
                 Intent intent3=new Intent(getActivity(),OrderActivity.class);
-                intent3.putExtra("tag",3);
+                intent3.putExtra("tag",4);
                 startActivity(intent3);
                 break;
             case R.id.ll_takeover:
                 Intent intent4=new Intent(getActivity(),OrderActivity.class);
-                intent4.putExtra("tag",4);
+                intent4.putExtra("tag",3);
                 startActivity(intent4);
                 break;
         }

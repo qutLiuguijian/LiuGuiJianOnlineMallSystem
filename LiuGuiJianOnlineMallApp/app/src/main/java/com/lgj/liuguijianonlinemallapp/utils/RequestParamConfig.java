@@ -34,4 +34,16 @@ public class RequestParamConfig {
                               ResponseCallback callback){
         OkHttpPlus.post(host+"/getCar",params,callback);
     }
+    public static void getAllOrderByUAS(RequestParams params,
+                              ResponseCallback callback){
+        OkHttpPlus.post(host+"/getAllOrderByUAS",params,callback);
+    }
+    public static void updateOrder(RequestParams params,
+                                        ResponseCallback callback){
+        OkHttpPlus.post(host+"/updateOrder",params,callback);
+    }
+    public static void deleteOrder(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/deleteOrder",params,callback);
+    }
 }
