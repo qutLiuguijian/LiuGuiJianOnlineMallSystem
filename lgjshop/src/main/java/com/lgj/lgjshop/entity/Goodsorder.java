@@ -36,13 +36,34 @@ public class Goodsorder implements Serializable {
 
     private Integer edtime;
 
-    private String shopaddresss;
+    private String saddress;
 
-    private String useraddress;
+    private String address;
 
     private Integer state;
 
     private Integer count;
 
+    private transient String gName;
+
+    private transient Integer gShopId;
+
+    private transient Double gPrice;
+
+    private transient Double gDiscountPrice;
+
+    private transient String gDesc;
+
+    private transient String gClassify;
+
+    private transient String gFirstClassify;
+
+    private transient String gSecondClassify;
+
+    private transient String gThirdClassify;
+
+    private transient String gImage;
+
+    private transient String sname;
 
 }
