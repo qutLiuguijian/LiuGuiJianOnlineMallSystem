@@ -15,5 +15,5 @@ import java.util.List;
  * @since 2020-04-01
  */
 public interface IMycarService extends IService<Mycar> {
-    List<Goods> getCarGoods(String uname);
+    List<Mycar> getCarGoods(String uname);
 }

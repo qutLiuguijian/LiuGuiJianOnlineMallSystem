@@ -24,7 +24,7 @@ public class MycarServiceImpl extends ServiceImpl<MycarMapper, Mycar> implements
     @Autowired
     MycarMapper mycarMapper;
     @Override
-    public List<Goods> getCarGoods(String uname) {
+    public List<Mycar> getCarGoods(String uname) {
         return mycarMapper.getCarGoods(uname);
     }
 }

@@ -44,6 +44,8 @@ public class Goodsorder implements Serializable {
 
     private Integer count;
 
+    private Integer rId;
+
     private transient String gName;
 
     private transient Integer gShopId;

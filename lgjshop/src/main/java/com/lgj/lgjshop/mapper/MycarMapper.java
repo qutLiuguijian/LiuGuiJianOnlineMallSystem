@@ -19,5 +19,5 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MycarMapper extends BaseMapper<Mycar> {
-    List<Goods>getCarGoods(String uname);
+    List<Mycar>getCarGoods(String uname);
 }

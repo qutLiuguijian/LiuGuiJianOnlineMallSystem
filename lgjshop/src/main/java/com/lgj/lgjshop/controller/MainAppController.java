@@ -125,6 +125,13 @@ public class MainAppController {
         }
     }
 
+    @RequestMapping(value = "exitLogin", method = RequestMethod.POST)
+    @ApiOperation(value = "退出登录", notes = "")
+    public ServerResult exitLogin() throws Exception {
+        redisService.flush();
+        return new ServerResult(0, "退出成功");
+    }
+
     @RequestMapping(value = "addCar", method = RequestMethod.POST)
     @ApiOperation(value = "加入购物车", notes = "")
     public ServerResult addCar(@RequestParam String username
@@ -132,12 +139,12 @@ public class MainAppController {
             , @RequestParam int count) {
         QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uname", username);
-        queryWrapper.eq("m_goodsid", g_id);
+        queryWrapper.eq("g_id", g_id);
         List<Mycar> list = mycarService.list(queryWrapper);
         if (list == null || list.size() == 0) {
             Mycar mycar = new Mycar();
             mycar.setUname(username);
-            mycar.setMGoodsid(g_id);
+            mycar.setGId(g_id);
             mycar.setCount(count);
             boolean save = mycarService.save(mycar);
             if (save) {
@@ -161,30 +168,33 @@ public class MainAppController {
     @RequestMapping(value = "getCar", method = RequestMethod.POST)
     @ApiOperation(value = "获得购物车商品", notes = "")
     public ServerResult getCar(@RequestParam String username) {
-        List<Goods> carGoods = mycarService.getCarGoods(username);
+        List<Mycar> carGoods = mycarService.getCarGoods(username);
         return new ServerResult(0, "", carGoods);
     }
 
     @RequestMapping(value = "buyFromCar", method = RequestMethod.POST)
     @ApiOperation(value = "购物车下单", notes = "")
     public ServerResult buyFromCar(@RequestParam String username
-            , @RequestParam int g_id
+            , @RequestParam int id, @RequestParam int g_id
             , @RequestParam int edTime
             , @RequestParam String userAddress
-            , @RequestParam int count) {
+            , @RequestParam int count
+            , @RequestParam int state
+            , @RequestParam int rid) {
         QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("my_goodsid", g_id);
+        queryWrapper.eq("id", id);
         boolean remove = mycarService.remove(queryWrapper);
         if (remove) {
             Goodsorder goodsorder = new Goodsorder();
             goodsorder.setUname(username);
             goodsorder.setGId(g_id);
             goodsorder.setEdtime(edTime);
-            Goods goods=goodsService.getGoodsDetail(g_id);
+            Goods goods = goodsService.getGoodsDetail(g_id);
             goodsorder.setSaddress(goods.getSaddress());
             goodsorder.setAddress(userAddress);
             goodsorder.setCount(count);
-            goodsorder.setState(0);
+            goodsorder.setState(state);
+            goodsorder.setRId(rid);
             boolean save = goodsorderService.save(goodsorder);
             if (save) {
                 return new ServerResult(0, "下单成功");
@@ -202,16 +212,19 @@ public class MainAppController {
             , @RequestParam int g_id
             , @RequestParam int edTime
             , @RequestParam String userAddress
-            , @RequestParam int count) {
+            , @RequestParam int count
+            , @RequestParam int state
+            , @RequestParam int rid) {
         Goodsorder goodsorder = new Goodsorder();
         goodsorder.setUname(username);
         goodsorder.setGId(g_id);
         goodsorder.setEdtime(edTime);
-        Goods goods=goodsService.getGoodsDetail(g_id);
+        Goods goods = goodsService.getGoodsDetail(g_id);
         goodsorder.setSaddress(goods.getSaddress());
         goodsorder.setAddress(userAddress);
         goodsorder.setCount(count);
-        goodsorder.setState(0);
+        goodsorder.setState(state);
+        goodsorder.setRId(rid);
         boolean save = goodsorderService.save(goodsorder);
         if (save) {
             return new ServerResult(0, "下单成功");
@@ -223,7 +236,7 @@ public class MainAppController {
 
     @RequestMapping(value = "updateOrder", method = RequestMethod.POST)
     @ApiOperation(value = "更新下单 0 待付款 1 待发货 2 待收货 3 待评价 4 售后/退款", notes = "")
-    public ServerResult updateOrder(@RequestParam int id,@RequestParam int state) {
+    public ServerResult updateOrder(@RequestParam int id, @RequestParam int state) {
         Goodsorder goodsorder = goodsorderService.getById(id);
         goodsorder.setState(state);
         boolean b = goodsorderService.saveOrUpdate(goodsorder);
@@ -253,14 +266,15 @@ public class MainAppController {
         List<Goodsorder> list = goodsorderService.list(queryWrapper);
         return new ServerResult(0, "成功", list);
     }
+
     @RequestMapping(value = "getAllOrderByUAS", method = RequestMethod.POST)
     @ApiOperation(value = "通过用户名和状态获得全部下单", notes = "")
-    public ServerResult getAllOrderByUAS(@RequestParam String uname,int  state) {
+    public ServerResult getAllOrderByUAS(@RequestParam String uname, int state) {
         List<Goods> orderAll;
-        if (state<0){
+        if (state < 0) {
             orderAll = goodsorderService.getOrderAll(uname);
-        }else {
-            orderAll = goodsorderService.getOrderByState(uname,state);
+        } else {
+            orderAll = goodsorderService.getOrderByState(uname, state);
         }
 
         return new ServerResult(0, "成功", orderAll);
@@ -272,34 +286,34 @@ public class MainAppController {
         List<Firstclassify> list = firstclassifyService.list();
         List<Secondclassify> list2 = secondclassifyService.list();
         List<Thirdclassify> list3 = thirdclassifyService.list();
-        List<Classify>classifyList=new ArrayList<>();
-        for (Thirdclassify thirdclassify:list3){
-            Classify classify=new Classify();
+        List<Classify> classifyList = new ArrayList<>();
+        for (Thirdclassify thirdclassify : list3) {
+            Classify classify = new Classify();
             classify.setId(thirdclassify.getSId());
             classify.setName(thirdclassify.getThirdClassify());
             classifyList.add(classify);
         }
-        List<Classify>classifyList2=new ArrayList<>();
-        for (Secondclassify secondclassify:list2){
-            Classify classify=new Classify();
+        List<Classify> classifyList2 = new ArrayList<>();
+        for (Secondclassify secondclassify : list2) {
+            Classify classify = new Classify();
             classify.setId(secondclassify.getFId());
             classify.setName(secondclassify.getSecondClassify());
-            classify.childName=new ArrayList<>();
-            for (Classify classify1:classifyList){
-                if (classify1.getId()==secondclassify.getId()){
+            classify.childName = new ArrayList<>();
+            for (Classify classify1 : classifyList) {
+                if (classify1.getId() == secondclassify.getId()) {
                     classify.childName.add(classify1);
                 }
             }
             classifyList2.add(classify);
         }
-        List<Classify>classifyList3=new ArrayList<>();
-        for (Firstclassify firstclassify:list){
-            Classify classify=new Classify();
+        List<Classify> classifyList3 = new ArrayList<>();
+        for (Firstclassify firstclassify : list) {
+            Classify classify = new Classify();
             classify.setId(firstclassify.getId());
             classify.setName(firstclassify.getFirstClassify());
-            classify.childName=new ArrayList<>();
-            for (Classify classify1:classifyList2){
-                if (classify1.getId()==firstclassify.getId()){
+            classify.childName = new ArrayList<>();
+            for (Classify classify1 : classifyList2) {
+                if (classify1.getId() == firstclassify.getId()) {
                     classify.childName.add(classify1);
                 }
             }
@@ -320,4 +334,45 @@ public class MainAppController {
         goods.setImgurl(imgList);
         return new ServerResult(0, "", goods);
     }
+
+    @RequestMapping(value = "saveReceiver", method = RequestMethod.POST)
+    @ApiOperation(value = "保存收货人信息", notes = "")
+    public ServerResult saveReceiver(Integer id,
+                                     @RequestParam String uname,
+                                     @RequestParam String receiver,
+                                     @RequestParam String address,
+                                     @RequestParam String phone) {
+        Gaddress gaddress = new Gaddress();
+        gaddress.setId(id);
+        gaddress.setUname(uname);
+        gaddress.setAddress(address);
+        gaddress.setReceiver(receiver);
+        gaddress.setPhone(phone);
+        boolean save = gaddressService.saveOrUpdate(gaddress);
+        if (save) {
+            return new ServerResult(0, "保存成功");
+        } else {
+            return new ServerResult(1, "保存失败");
+        }
+    }
+    @RequestMapping(value = "deleteReceiver", method = RequestMethod.POST)
+    @ApiOperation(value = "删除收货人信息", notes = "")
+    public ServerResult deleteReceiver(@RequestParam Integer id) {
+
+        boolean remove = gaddressService.removeById(id);
+        if (remove) {
+            return new ServerResult(0, "删除成功");
+        } else {
+            return new ServerResult(1, "删除失败");
+        }
+    }
+    @RequestMapping(value = "getReceiver", method = RequestMethod.POST)
+    @ApiOperation(value = "获取收货人信息", notes = "")
+    public ServerResult getReceiver(@RequestParam String uname) {
+        QueryWrapper<Gaddress> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uname", uname);
+        List<Gaddress> list = gaddressService.list(queryWrapper);
+        return new ServerResult(0, "", list);
+    }
+
 }

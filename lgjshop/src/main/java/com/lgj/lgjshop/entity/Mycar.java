@@ -32,8 +32,30 @@ public class Mycar implements Serializable {
 
     private String uname;
 
-    private Integer mGoodsid;
+    private Integer gId;
 
     private Integer count;
+
+    private transient String gName;
+
+    private transient Integer gShopId;
+
+    private transient Double gPrice;
+
+    private transient Double gDiscountPrice;
+
+    private transient String gDesc;
+
+    private transient String gClassify;
+
+    private transient String gFirstClassify;
+
+    private transient String gSecondClassify;
+
+    private transient String gThirdClassify;
+
+    private transient String gImage;
+
+    private transient String sname;
 
 }
