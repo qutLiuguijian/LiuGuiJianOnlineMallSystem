@@ -14,7 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.OrderActivity"></activity>
+        <activity android:name=".activity.ExitActivity"></activity>
+        <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.ReceiverActivity" />
+        <activity android:name=".activity.AssessActivity" />
+        <activity android:name=".activity.BalanceActivity" />
+        <activity android:name=".activity.OrderActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.GoodsDetailActivity" />
         <activity

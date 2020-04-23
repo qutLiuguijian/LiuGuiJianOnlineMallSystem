@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
+import com.lgj.liuguijianonlinemallapp.activity.BalanceActivity;
 import com.lgj.liuguijianonlinemallapp.activity.GoodsDetailActivity;
 import com.lgj.liuguijianonlinemallapp.activity.LoginActivity;
 import com.lgj.liuguijianonlinemallapp.adapter.CarGoodsRecyclerViewAdapter;
@@ -34,13 +35,14 @@ import com.ruiwcc.okhttpPlus.request.RequestParams;
 import com.ruiwcc.okhttpPlus.response.ResponseCallback;
 import com.youth.banner.BannerConfig;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyCartFragment extends Fragment implements View.OnClickListener{
+public class MyCartFragment extends Fragment implements View.OnClickListener {
     private RecyclerView rv_goods;
     private CheckBox checkbox_all;
     private TextView tv_allpay;
@@ -48,6 +50,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
     private RelativeLayout rl_footer;
     private CarGoodsRecyclerViewAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
+    private List<Goods> goodsChecked = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,6 +67,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
         }
         return view;
     }
+
 
     private void loadData() {
         Map<String, String> map = new HashMap<>();
@@ -83,9 +87,10 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
     }
 
     private void bind() {
-        adapter = new CarGoodsRecyclerViewAdapter(getContext(),handler, goodsList);
+        adapter = new CarGoodsRecyclerViewAdapter(getContext(), handler, goodsList);
         rv_goods.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_goods.setAdapter(adapter);
+        checkbox_all.setChecked(false);
         checkbox_all.setOnClickListener(this);
         btn_topay.setOnClickListener(this);
     }
@@ -95,14 +100,14 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
         checkbox_all = view.findViewById(R.id.checkbox_all);
         tv_allpay = view.findViewById(R.id.tv_allpay);
         btn_topay = view.findViewById(R.id.btn_topay);
-        rl_footer=view.findViewById(R.id.rl_footer);
+        rl_footer = view.findViewById(R.id.rl_footer);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 300) {
-            if (resultCode==100){
+            if (resultCode == 100) {
                 bind();
                 loadData();
             }
@@ -129,7 +134,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
                         goodsList.clear();
                         goodsList.addAll(result.getData());
                         adapter.notifyDataSetChanged();
-                        if (goodsList.size()>0){
+                        if (goodsList.size() > 0) {
                             rl_footer.setVisibility(View.VISIBLE);
                         }
                     }
@@ -142,38 +147,49 @@ public class MyCartFragment extends Fragment implements View.OnClickListener{
     };
 
     private void pay() {
-        int buy_count=0;
-        double money=0;
-        checkbox_all.setChecked(true);
-        for (int i=0;i<goodsList.size();i++){
-            if (goodsList.get(i).isChecked()){
+        int buy_count = 0;
+        double money = 0;
+        boolean flag = true;
+        for (int i = 0; i < goodsList.size(); i++) {
+            if (goodsList.get(i).isChecked()) {
                 buy_count++;
-                money=money+goodsList.get(i).getGprice()*goodsList.get(i).getCount();
-            }else {
-                checkbox_all.setChecked(false);
+                money = money + goodsList.get(i).getGprice() * goodsList.get(i).getCount();
+            } else {
+                flag = false;
             }
         }
-        if (buy_count==0){
+        checkbox_all.setChecked(flag);
+        if (buy_count == 0) {
             tv_allpay.setText("0.00");
             btn_topay.setText("去结算");
-        }else {
-            tv_allpay.setText(money+"");
-            btn_topay.setText("去结算("+buy_count+")");
+        } else {
+            tv_allpay.setText(money + "");
+            btn_topay.setText("去结算(" + buy_count + ")");
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_topay:
+                Intent intent = new Intent(getActivity(), BalanceActivity.class);
+                intent.putExtra("from", "mycar");
+                goodsChecked.clear();
+                for (int i = 0; i < goodsList.size(); i++) {
+                    if (goodsList.get(i).isChecked()) {
+                        goodsChecked.add(goodsList.get(i));
+                    }
+                }
+                intent.putExtra("list", (Serializable) goodsChecked);
+                startActivity(intent);
                 break;
             case R.id.checkbox_all:
-                if (checkbox_all.isChecked()){
-                    for (int i=0;i<goodsList.size();i++){
+                if (checkbox_all.isChecked()) {
+                    for (int i = 0; i < goodsList.size(); i++) {
                         goodsList.get(i).setChecked(true);
                     }
-                }else {
-                    for (int i=0;i<goodsList.size();i++){
+                } else {
+                    for (int i = 0; i < goodsList.size(); i++) {
                         goodsList.get(i).setChecked(false);
                     }
                 }
