@@ -34,7 +34,7 @@ import java.util.List;
 public class OrderActivity extends FragmentActivity {
     private ViewPager vp_content;
     private TabLayout tl_daohang;
-    private TextView tv_tltle;
+    private TextView tv_title;
     private ImageView iv_order_back;
     private int[] tabTitle = {R.string.module_order_all, R.string.module_order_pay,
             R.string.module_order_send, R.string.module_order_takeover,
@@ -56,11 +56,11 @@ public class OrderActivity extends FragmentActivity {
         init();
         int tag = getIntent().getIntExtra("tag", -1);
         tl_daohang.getTabAt(tag).select();
-        tv_tltle.setText(tabTitle[tag]);
+        tv_title.setText(tabTitle[tag]);
         tl_daohang.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tv_tltle.setText(tab.getText());
+                tv_title.setText(tab.getText());
             }
 
             @Override
@@ -78,7 +78,7 @@ public class OrderActivity extends FragmentActivity {
     private void init() {
         tl_daohang = findViewById(R.id.tl_order_daohang);
         vp_content = findViewById(R.id.vp_order_content);
-        tv_tltle = findViewById(R.id.tv_tltle);
+        tv_title = findViewById(R.id.tv_title);
         iv_order_back=findViewById(R.id.iv_order_back);
         iv_order_back.setOnClickListener(new View.OnClickListener() {
             @Override

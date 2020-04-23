@@ -41,12 +41,13 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
         this.onitemFocusChangeClickListener = onitemFocusChangeClickListener;
     }
 
-    public OrderGoodsRecyclerViewAdapter(Context context, List<Goods> goodsList,Handler handler) {
+    public OrderGoodsRecyclerViewAdapter(Context context, List<Goods> goodsList, Handler handler) {
         this.context = context;
         this.list = goodsList;
-        this.handler=handler;
+        this.handler = handler;
 
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -60,45 +61,48 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
         final Goods goods = list.get(i);
         Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_order_goods);
         myViewHolder.tv_order_name.setText(goods.getGname());
-        myViewHolder.tv_order_price.setText(goods.getGprice()+"");
-        myViewHolder.tv_order_count.setText("x "+goods.getCount()+"");
-        myViewHolder.tv_order_allpay.setText("总计:¥"+goods.getGprice()*goods.getCount()+"");
+        myViewHolder.tv_order_price.setText(goods.getGprice() + "");
+        myViewHolder.tv_order_count.setText("x " + goods.getCount() + "");
+        myViewHolder.tv_order_allpay.setText("总计:¥" + goods.getGprice() * goods.getCount() + "");
 
-        if (goods.getState()==0){
-            myViewHolder.btn_delete.setVisibility(View.VISIBLE);
-            myViewHolder.btn_update.setText("付款");
-        }else if (goods.getState()==1){
+        if (goods.getState() == null) {
             myViewHolder.btn_delete.setVisibility(View.GONE);
             myViewHolder.btn_update.setVisibility(View.GONE);
-        }else if (goods.getState()==2){
+        } else if (goods.getState() == 0) {
+            myViewHolder.btn_delete.setVisibility(View.VISIBLE);
+            myViewHolder.btn_update.setText("付款");
+        } else if (goods.getState() == 1) {
+            myViewHolder.btn_delete.setVisibility(View.GONE);
+            myViewHolder.btn_update.setVisibility(View.GONE);
+        } else if (goods.getState() == 2) {
             myViewHolder.btn_delete.setVisibility(View.GONE);
             myViewHolder.btn_update.setText("确认收货");
-        }else if (goods.getState()==3){
+        } else if (goods.getState() == 3) {
             myViewHolder.btn_delete.setVisibility(View.GONE);
             myViewHolder.btn_update.setText("立即评价");
-        }else if (goods.getState()==4){
+        } else if (goods.getState() == 4) {
             myViewHolder.btn_delete.setVisibility(View.VISIBLE);
             myViewHolder.btn_update.setVisibility(View.GONE);
         }
         myViewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               showDialog("确认删除订单?","",1,i);
+                showDialog("确认删除订单?", "", 1, i);
             }
         });
         myViewHolder.btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (goods.getState()==3){
+                if (goods.getState() == 3) {
 
-                }else {
-                    String title="";
-                    if (goods.getState()==0){
-                        title="是否进行付款?";
-                    }else if (goods.getState()==2){
-                        title="是否确认收货?";
+                } else {
+                    String title = "";
+                    if (goods.getState() == 0) {
+                        title = "是否进行付款?";
+                    } else if (goods.getState() == 2) {
+                        title = "是否确认收货?";
                     }
-                    showDialog(title,"",0,i);
+                    showDialog(title, "", 0, i);
                 }
 
             }
@@ -109,12 +113,14 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return list==null||list.size()==0?0:list.size();
+        return list == null || list.size() == 0 ? 0 : list.size();
     }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_order_name, tv_order_price, tv_order_count,tv_order_allpay;
+        private TextView tv_order_name, tv_order_price, tv_order_count, tv_order_allpay;
         private ImageView iv_order_goods;
-        private Button btn_delete,btn_update;
+        private Button btn_delete, btn_update;
+
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             tv_order_name = itemView.findViewById(R.id.tv_order_name);
@@ -154,6 +160,7 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
     public interface OnitemClickListener {
         void onItemClick(View view, int postion);
     }
@@ -165,7 +172,8 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     public interface OnitemFocusChangeClickListener {
         void onItemFocusChangeListener(View view, boolean hasFocus, int postion);
     }
-    void showDialog(String title, String message, final int flag, final int postion){
+
+    void showDialog(String title, String message, final int flag, final int postion) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(title);
         dialog.setMessage(message);
@@ -173,10 +181,10 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (flag==0){
-                    handler.obtainMessage(2,postion).sendToTarget();
-                }else {
-                    handler.obtainMessage(3,postion).sendToTarget();
+                if (flag == 0) {
+                    handler.obtainMessage(2, postion).sendToTarget();
+                } else {
+                    handler.obtainMessage(3, postion).sendToTarget();
                 }
 
             }
@@ -184,7 +192,7 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               dialog.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.show();

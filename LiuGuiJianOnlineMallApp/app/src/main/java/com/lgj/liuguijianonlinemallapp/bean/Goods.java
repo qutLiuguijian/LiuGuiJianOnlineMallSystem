@@ -42,6 +42,7 @@ public class Goods implements Serializable {
     private   boolean isChecked=false;
     private  Integer state;
     private  Integer edtime;
+    private Integer rid;
     private  String address;
 
 
@@ -211,5 +212,13 @@ public class Goods implements Serializable {
 
     public void setGid(int gid) {
         this.gid = gid;
+    }
+
+    public Integer getRid() {
+        return rid;
+    }
+
+    public void setRid(Integer rid) {
+        this.rid = rid;
     }
 }

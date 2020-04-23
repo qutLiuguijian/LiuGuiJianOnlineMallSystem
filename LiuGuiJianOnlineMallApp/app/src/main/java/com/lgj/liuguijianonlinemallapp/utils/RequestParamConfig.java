@@ -46,4 +46,28 @@ public class RequestParamConfig {
                                    ResponseCallback callback){
         OkHttpPlus.post(host+"/deleteOrder",params,callback);
     }
+    public static void saveReceiver(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/saveReceiver",params,callback);
+    }
+    public static void getReceiver(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/getReceiver",params,callback);
+    }
+    public static void deleteReceiver(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/deleteReceiver",params,callback);
+    }
+    public static void buyFromCar(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/buyFromCar",params,callback);
+    }
+    public static void buyFromDetail(RequestParams params,
+                                   ResponseCallback callback){
+        OkHttpPlus.post(host+"/buyFromDetail",params,callback);
+    }
+    public static void exitLogin(RequestParams params,
+                                     ResponseCallback callback){
+        OkHttpPlus.post(host+"/exitLogin",params,callback);
+    }
 }

@@ -37,6 +37,7 @@ import com.ruiwcc.okhttpPlus.response.ResponseCallback;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +55,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private Goods goods;
     private AssessRecyclerViewAdapter adapter;
     private List<String> list = new ArrayList<>();
+    private List<Goods> goodsChecked = new ArrayList<>();
     private int flag = 0;//0 默认 1 购买 2 加入购物车
 
     @Override
@@ -226,7 +228,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     startActivityForResult(intent,200);
                 } else {
                     if (flag == 1) {
-                        Intent intent = new Intent();
+                        Intent intent = new Intent(GoodsDetailActivity.this,BalanceActivity.class);
+                        intent.putExtra("from", "detail");
+                        goods.setCount(Integer.parseInt(tv_pop_count.getText().toString()));
+                        goodsChecked.clear();
+                        goodsChecked.add(goods);
+                        intent.putExtra("list", (Serializable) goodsChecked);
                         startActivity(intent);
                     } else if (flag == 2) {
                         Map<String, String> map = new HashMap<>();

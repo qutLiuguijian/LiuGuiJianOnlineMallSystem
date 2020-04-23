@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lgj.liuguijianonlinemallapp.R;
+import com.lgj.liuguijianonlinemallapp.activity.ExitActivity;
 import com.lgj.liuguijianonlinemallapp.activity.LoginActivity;
 import com.lgj.liuguijianonlinemallapp.activity.OrderActivity;
 import com.lgj.liuguijianonlinemallapp.utils.PreferencesUtils;
@@ -56,6 +57,17 @@ public class MineFragment extends Fragment implements View.OnClickListener{
         ll_assess.setOnClickListener(this);
         ll_send.setOnClickListener(this);
         ll_takeover.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         final String isReLogin = PreferencesUtils.getString(getContext(), "isReLogin");
         if (isReLogin != null && !isReLogin.isEmpty() && isReLogin.equals("no")) {
             String name = PreferencesUtils.getString(getContext(), "username");
@@ -67,18 +79,14 @@ public class MineFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 if (isReLogin != null && !isReLogin.isEmpty() && isReLogin.equals("no")) {
-
+                    Intent intent = new Intent(getActivity(), ExitActivity.class);
+                    startActivity(intent);
                 } else {
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivityForResult(intent,100);
                 }
             }
         });
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
