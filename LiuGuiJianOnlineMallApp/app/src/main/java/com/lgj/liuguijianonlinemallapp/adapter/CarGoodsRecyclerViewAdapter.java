@@ -21,14 +21,16 @@ public class CarGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     Context context;
     List<Goods> list;
     Handler handler;
-
+    private OnitemLongClickListener onitemLongClickListener;
     public CarGoodsRecyclerViewAdapter(Context context, Handler handler, List<Goods> goodsList) {
         this.context = context;
         this.list = goodsList;
         this.handler = handler;
 
     }
-
+    public void setOnitemLongClickListener(OnitemLongClickListener onitemLongClickListener) {
+        this.onitemLongClickListener = onitemLongClickListener;
+    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -111,7 +113,19 @@ public class CarGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
             iv_car_add = itemView.findViewById(R.id.iv_car_add);
             iv_car_decrease = itemView.findViewById(R.id.iv_car_decrease);
             checkbox_car_goods = itemView.findViewById(R.id.checkbox_car_goods);
-
+            if (onitemLongClickListener != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        int pos = getAdapterPosition();
+                        onitemLongClickListener.onItemLongClick(itemView, pos);
+                        return true;
+                    }
+                });
+            }
         }
+    }
+    public interface OnitemLongClickListener {
+        void onItemLongClick(View view, int postion);
     }
 }

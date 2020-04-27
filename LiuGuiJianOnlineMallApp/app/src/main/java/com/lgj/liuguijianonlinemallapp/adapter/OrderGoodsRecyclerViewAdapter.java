@@ -94,7 +94,7 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 if (goods.getState() == 3) {
-
+                    handler.obtainMessage(4, i).sendToTarget();
                 } else {
                     String title = "";
                     if (goods.getState() == 0) {

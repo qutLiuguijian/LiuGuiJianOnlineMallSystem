@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -40,6 +41,7 @@ public class TakeOverFragment extends Fragment {
     private RecyclerView rv_takeover;
     private List<Goods> goods=new ArrayList();
     private OrderGoodsRecyclerViewAdapter adapter;
+    private LinearLayout ll_tip;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class TakeOverFragment extends Fragment {
     }
     private void init(View view){
         rv_takeover=view.findViewById(R.id.rv_takeover);
+        ll_tip=view.findViewById(R.id.ll_tip);
         adapter=new OrderGoodsRecyclerViewAdapter(getContext(),goods,handler);
         rv_takeover.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_takeover.setAdapter(adapter);
@@ -107,10 +110,13 @@ public class TakeOverFragment extends Fragment {
                     Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
                     ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
-                        if (result.getData()!=null){
-                            goods.clear();
-                            goods.addAll(result.getData());
-                            adapter.notifyDataSetChanged();
+                        goods.clear();
+                        goods.addAll(result.getData());
+                        adapter.notifyDataSetChanged();
+                        if (goods.size() > 0) {
+                            ll_tip.setVisibility(View.GONE);
+                        } else {
+                            ll_tip.setVisibility(View.VISIBLE);
                         }
                     }
                     break;

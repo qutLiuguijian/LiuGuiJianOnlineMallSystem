@@ -70,4 +70,36 @@ public class RequestParamConfig {
                                      ResponseCallback callback){
         OkHttpPlus.post(host+"/exitLogin",params,callback);
     }
+    public static void classify(RequestParams params,
+                                 ResponseCallback callback){
+        OkHttpPlus.post(host+"/classify",params,callback);
+    }
+    public static void getGoodsByTClassify(RequestParams params,
+                                ResponseCallback callback){
+        OkHttpPlus.post(host+"/getGoodsByTClassify",params,callback);
+    }
+    public static void getGoodsById(RequestParams params,
+                                           ResponseCallback callback){
+        OkHttpPlus.post(host+"/getGoodsById",params,callback);
+    }
+    public static void addAssess(RequestParams params,
+                                    ResponseCallback callback){
+        OkHttpPlus.post(host+"/addAssess",params,callback);
+    }
+    public static void getAssess(RequestParams params,
+                                 ResponseCallback callback){
+        OkHttpPlus.post(host+"/getAssess",params,callback);
+    }
+    public static void deleteCar(RequestParams params,
+                                 ResponseCallback callback){
+        OkHttpPlus.post(host+"/deleteCar",params,callback);
+    }
+    public static void isShowMark(RequestParams params,
+                                 ResponseCallback callback){
+        OkHttpPlus.post(host+"/isShowMark",params,callback);
+    }
+    public static void getAllOrder(RequestParams params,
+                                  ResponseCallback callback){
+        OkHttpPlus.post(host+"/getAllOrder",params,callback);
+    }
 }

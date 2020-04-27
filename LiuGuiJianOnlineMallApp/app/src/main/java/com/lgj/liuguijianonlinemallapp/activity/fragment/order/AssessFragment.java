@@ -13,11 +13,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
+import com.lgj.liuguijianonlinemallapp.activity.AssessActivity;
 import com.lgj.liuguijianonlinemallapp.activity.GoodsDetailActivity;
 import com.lgj.liuguijianonlinemallapp.adapter.MyGoodsRecyclerViewAdapter;
 import com.lgj.liuguijianonlinemallapp.adapter.OrderGoodsRecyclerViewAdapter;
@@ -39,6 +41,7 @@ public class AssessFragment extends Fragment {
     private RecyclerView rv_assess;
     private List<Goods> goods=new ArrayList();
     private OrderGoodsRecyclerViewAdapter adapter;
+    private LinearLayout ll_tip;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,8 +56,20 @@ public class AssessFragment extends Fragment {
             handler.sendEmptyMessage(1);
         }
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==100){
+            if (resultCode==200){
+                if (data.getStringExtra("update")!=null){
+                    updateData(data.getIntExtra("pos",-1));
+                }
+            }
+        }
+    }
     private void init(View view){
         rv_assess=view.findViewById(R.id.rv_assess);
+        ll_tip=view.findViewById(R.id.ll_tip);
         adapter=new OrderGoodsRecyclerViewAdapter(getContext(),goods,handler);
         rv_assess.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_assess.setAdapter(adapter);
@@ -104,10 +119,13 @@ public class AssessFragment extends Fragment {
                     Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
                     ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
-                        if (result.getData()!=null){
-                            goods.clear();
-                            goods.addAll(result.getData());
-                            adapter.notifyDataSetChanged();
+                        goods.clear();
+                        goods.addAll(result.getData());
+                        adapter.notifyDataSetChanged();
+                        if (goods.size() > 0) {
+                            ll_tip.setVisibility(View.GONE);
+                        } else {
+                            ll_tip.setVisibility(View.VISIBLE);
                         }
                     }
                     break;
@@ -116,6 +134,15 @@ public class AssessFragment extends Fragment {
                     break;
                 case 2:
                     updateData(Integer.parseInt(msg.obj.toString()));
+                    break;
+                case 4:
+                    Intent intent=new Intent(getContext(), AssessActivity.class);
+                    intent.putExtra("pos",Integer.parseInt(msg.obj.toString()));
+                    intent.putExtra("gid",goods.get(Integer.parseInt(msg.obj.toString())).getGid());
+                    intent.putExtra("img",goods.get(Integer.parseInt(msg.obj.toString())).getGimage());
+                    intent.putExtra("name",goods.get(Integer.parseInt(msg.obj.toString())).getGname());
+                    intent.putExtra("desc",goods.get(Integer.parseInt(msg.obj.toString())).getGdesc());
+                    startActivityForResult(intent,100);
                     break;
             }
         }

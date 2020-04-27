@@ -3,9 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="gray">#F6F6F6</color>
+    <color name="gray">#F2F2F2</color>
+    <color name="gray2">#F5F5F5</color>
     <color name="white">#ffffff</color>
     <color name="red">#ff0000</color>
+    <color name="bule">#0000FF</color>
+    <color name="bule2">#006699</color>
+    <color name="red2">#FFEAEF</color>
     <color name="black">#000000</color>
     <color name="anhong">#FF6857</color>
     <color name="yellow">#FFD718</color>

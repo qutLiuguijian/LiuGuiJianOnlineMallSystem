@@ -1,5 +1,6 @@
 package com.lgj.liuguijianonlinemallapp.activity.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +50,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
     private CheckBox checkbox_all;
     private TextView tv_allpay;
     private Button btn_topay;
+    private LinearLayout ll_tip;
     private RelativeLayout rl_footer;
     private CarGoodsRecyclerViewAdapter adapter;
     private List<Goods> goodsList = new ArrayList<>();
@@ -57,6 +61,13 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.module_fragment_mycart, container, false);
         init(view);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         String isReLogin = PreferencesUtils.getString(getActivity(), "isReLogin");
         if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -65,9 +76,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             bind();
             loadData();
         }
-        return view;
     }
-
 
     private void loadData() {
         Map<String, String> map = new HashMap<>();
@@ -93,6 +102,58 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         checkbox_all.setChecked(false);
         checkbox_all.setOnClickListener(this);
         btn_topay.setOnClickListener(this);
+        adapter.setOnitemLongClickListener(new CarGoodsRecyclerViewAdapter.OnitemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, final int postion) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setTitle("是否删除?");
+                dialog.setMessage("");
+                dialog.setCancelable(false);    //设置是否可以通过点击对话框外区域或者返回按键关闭对话框
+                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("id", String.valueOf(goodsList.get(postion).getId()));
+                        RequestParams params = new RequestParams(map);
+                        RequestParamConfig.deleteCar(params, new ResponseCallback() {
+                            @Override
+                            public void onSuccess(Object responseObj) {
+                                Gson gson = new Gson();
+                                Type type = new TypeToken<ServerResult>() {
+                                }.getType();
+                                ServerResult result = gson.fromJson(responseObj.toString(), type);
+                                Toast.makeText(getActivity(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (result.getRetCode() == 0) {
+                                    goodsList.remove(postion);
+                                    adapter.notifyDataSetChanged();
+                                    if (goodsList.size() > 0) {
+                                        rl_footer.setVisibility(View.VISIBLE);
+                                        ll_tip.setVisibility(View.GONE);
+                                    }else {
+                                        rl_footer.setVisibility(View.GONE);
+                                        ll_tip.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(OkHttpException failuer) {
+                                Toast.makeText(getActivity(), failuer.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+
+            }
+        });
     }
 
     private void init(View view) {
@@ -101,6 +162,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         tv_allpay = view.findViewById(R.id.tv_allpay);
         btn_topay = view.findViewById(R.id.btn_topay);
         rl_footer = view.findViewById(R.id.rl_footer);
+        ll_tip = view.findViewById(R.id.ll_tip);
     }
 
     @Override
@@ -136,6 +198,10 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
                         adapter.notifyDataSetChanged();
                         if (goodsList.size() > 0) {
                             rl_footer.setVisibility(View.VISIBLE);
+                            ll_tip.setVisibility(View.GONE);
+                        }else {
+                            rl_footer.setVisibility(View.GONE);
+                            ll_tip.setVisibility(View.VISIBLE);
                         }
                     }
                     break;

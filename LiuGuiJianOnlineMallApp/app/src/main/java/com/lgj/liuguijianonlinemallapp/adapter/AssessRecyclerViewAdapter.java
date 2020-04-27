@@ -11,14 +11,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lgj.liuguijianonlinemallapp.R;
+import com.lgj.liuguijianonlinemallapp.bean.Gassess;
 import com.lgj.liuguijianonlinemallapp.bean.Goods;
 
 import java.util.List;
 
 public class AssessRecyclerViewAdapter extends RecyclerView.Adapter {
     Context context;
-    List<String> list;
-    public AssessRecyclerViewAdapter(Context context, List<String> goodsList) {
+    List<Gassess> list;
+    public AssessRecyclerViewAdapter(Context context, List<Gassess> goodsList) {
         this.context = context;
         this.list = goodsList;
 
@@ -33,10 +34,9 @@ public class AssessRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
-        //Goods goods = list.get(i);
-        myViewHolder.tv_uname.setText(list.get(i));
-//        myViewHolder.tv_desc.setText(goods.getGdesc());
-//        myViewHolder.tv_goodsName.setText(goods.getGprice()+"");
+        Gassess gassess=list.get(i);
+        myViewHolder.tv_uname.setText(gassess.getUname());
+        myViewHolder.tv_assess.setText(gassess.getAssess());
     }
 
     @Override
@@ -44,12 +44,11 @@ public class AssessRecyclerViewAdapter extends RecyclerView.Adapter {
         return list==null||list.size()==0?0:list.size();
     }
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_desc,tv_uname,tv_goodsName;
+        private TextView tv_assess,tv_uname;
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
-            tv_desc=itemView.findViewById(R.id.tv_desc);
+            tv_assess=itemView.findViewById(R.id.tv_assess);
             tv_uname=itemView.findViewById(R.id.tv_uname);
-            tv_goodsName=itemView.findViewById(R.id.tv_goodsName);
         }
     }
 }

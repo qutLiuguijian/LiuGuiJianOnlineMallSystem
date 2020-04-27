@@ -47,47 +47,50 @@ public class TransitActivity extends Activity {
         setContentView(R.layout.module_activity_transit);
         getQuanXian();
     }
-    private void goMainAct(){
+
+    private void goMainAct() {
         String isFirstStart = PreferencesUtils.getString(TransitActivity.this, "isFirstStart");
-        if (isFirstStart==null||isFirstStart.isEmpty()){
-            PreferencesUtils.putString(TransitActivity.this,"isFirstStart","yes");
-            Intent intent=new Intent(TransitActivity.this,MainActivity.class);
+        if (isFirstStart == null || isFirstStart.isEmpty()) {
+            PreferencesUtils.putString(TransitActivity.this, "isFirstStart", "yes");
+            Intent intent = new Intent(TransitActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             String username = PreferencesUtils.getString(TransitActivity.this, "username");
-            if (username==null||username.isEmpty()){
-                PreferencesUtils.putString(TransitActivity.this,"isFirstStart","yes");
-                Intent intent=new Intent(TransitActivity.this,MainActivity.class);
+            if (username == null || username.isEmpty()) {
+                PreferencesUtils.putString(TransitActivity.this, "isFirstStart", "yes");
+                Intent intent = new Intent(TransitActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            }else {
+            } else {
                 Map<String, String> map = new HashMap<>();
-                map.put("username",  username);
+                map.put("username", username);
                 RequestParams params = new RequestParams(map);
                 RequestParamConfig.isReLogin(params, new ResponseCallback() {
                     @Override
                     public void onSuccess(Object responseObj) {
-                        handler.obtainMessage(0,responseObj).sendToTarget();
+                        handler.obtainMessage(0, responseObj).sendToTarget();
                     }
 
                     @Override
                     public void onFailure(OkHttpException failuer) {
-                        Toast.makeText(TransitActivity.this,failuer.getMsg(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TransitActivity.this, failuer.getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
         }
     }
-    private void getQuanXian(){
-        Log.i("kkkkkkkkkk",Build.VERSION.SDK_INT+"=");
+
+    private void getQuanXian() {
+        Log.i("kkkkkkkkkk", Build.VERSION.SDK_INT + "=");
         if (Build.VERSION.SDK_INT >= 24) {
             checkPermission();
         } else {
             goMainAct();
         }
     }
+
     /**
      * 检查权限是否已接近配置
      */
@@ -122,28 +125,57 @@ public class TransitActivity extends Activity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         goMainAct();
     }
-    Handler handler=new Handler(){
+
+    private void loadMark() {
+        Map<String, String> map = new HashMap<>();
+        map.put("username", PreferencesUtils.getString(TransitActivity.this, "username"));
+        RequestParams params = new RequestParams(map);
+        RequestParamConfig.isShowMark(params, new ResponseCallback() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<ServerResult>() {
+                }.getType();
+                ServerResult result = gson.fromJson(responseObj.toString(), type);
+                if (result.getRetCode() == 0) {
+                    PreferencesUtils.putBoolean(TransitActivity.this, "isShowMark", true);
+                } else {
+                    PreferencesUtils.putBoolean(TransitActivity.this, "isShowMark", false);
+                }
+                Intent intent = new Intent(TransitActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(OkHttpException failuer) {
+                Toast.makeText(TransitActivity.this, failuer.getMsg(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     Gson gson = new Gson();
-                    Type type = new TypeToken<ServerResult<User>>() {}.getType();
+                    Type type = new TypeToken<ServerResult<User>>() {
+                    }.getType();
                     ServerResult<User> result = gson.fromJson(msg.obj.toString(), type);
-                    if (result.getRetCode()==0){
-                        User user=result.getData();
-                        PreferencesUtils.putString(TransitActivity.this,"isReLogin","no");
-                        PreferencesUtils.putString(TransitActivity.this,"username",user.getUsername());
-                        PreferencesUtils.putString(TransitActivity.this,"phone",user.getPhone());
-                        PreferencesUtils.putString(TransitActivity.this,"level",user.getLevel());
-                    }else {
-                        PreferencesUtils.putString(TransitActivity.this,"isReLogin","yes");
+                    if (result.getRetCode() == 0) {
+                        User user = result.getData();
+                        PreferencesUtils.putString(TransitActivity.this, "isReLogin", "no");
+                        PreferencesUtils.putString(TransitActivity.this, "username", user.getUsername());
+                        PreferencesUtils.putString(TransitActivity.this, "phone", user.getPhone());
+                        PreferencesUtils.putString(TransitActivity.this, "level", user.getLevel());
+                        loadMark();
+                    } else {
+                        PreferencesUtils.putBoolean(TransitActivity.this, "isShowMark", false);
+                        PreferencesUtils.putString(TransitActivity.this, "isReLogin", "yes");
                     }
-                    PreferencesUtils.putString(TransitActivity.this,"isFirstStart","yes");
-                    Intent intent=new Intent(TransitActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    PreferencesUtils.putString(TransitActivity.this, "isFirstStart", "yes");
                     break;
             }
         }

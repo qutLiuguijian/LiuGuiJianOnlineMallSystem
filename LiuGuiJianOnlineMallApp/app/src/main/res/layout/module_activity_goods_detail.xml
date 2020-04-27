@@ -39,12 +39,21 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
-
+            <TextView
+                android:id="@+id/tv_detail_assess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_detail_dec"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="商品评价"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_assess"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/tv_detail_dec">
+                android:layout_below="@id/tv_detail_assess">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

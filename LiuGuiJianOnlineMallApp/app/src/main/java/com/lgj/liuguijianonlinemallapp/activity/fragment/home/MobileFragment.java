@@ -61,7 +61,6 @@ public class MobileFragment extends Fragment {
         });
     }
     private void loadData(){
-        Log.i("kkkkkkkk","kk");
         Map<String, String> map = new HashMap<>();
         map.put("classify",  "手机数码");
         RequestParams params = new RequestParams(map);

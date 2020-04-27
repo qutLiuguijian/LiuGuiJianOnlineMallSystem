@@ -2,8 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,11 +25,12 @@
 
             <ImageView
                 android:id="@+id/iv_toLogin"
-                android:src="@drawable/module_mine_tologin_bg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="60dp"
-                android:layout_marginLeft="20dp"/>
+                android:src="@drawable/module_mine_tologin_bg" />
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tb_mine_toolbar"
                 android:layout_width="match_parent"
@@ -38,10 +38,6 @@
                 android:gravity="center"
                 app:layout_collapseMode="pin">
 
-                <!--                <ImageView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:src="@drawable/ave" />-->
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -55,57 +51,112 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
+
                 <LinearLayout
                     android:id="@+id/ll_pay"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/module_mine_pay"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:src="@drawable/module_mine_pay" />
+
+                        <ImageView
+                            android:id="@+id/iv_pay_mark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone"
+                            android:src="@drawable/module_mycar_iv_mark"></ImageView>
+                    </FrameLayout>
+
+
                     <TextView
-                        android:text="待付款"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="待付款" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_send"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/module_mine_send"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:src="@drawable/module_mine_send" />
+
+
+                        <ImageView
+                            android:id="@+id/iv_send_mark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone"
+                            android:src="@drawable/module_mycar_iv_mark"></ImageView>
+                    </FrameLayout>
+
+
                     <TextView
-                        android:text="待发货"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="待发货" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_takeover"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/module_mine_receive"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:src="@drawable/module_mine_receive" />
+
+                        <ImageView
+                            android:id="@+id/iv_takeover_mark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone"
+                            android:src="@drawable/module_mycar_iv_mark"></ImageView>
+                    </FrameLayout>
+
+
                     <TextView
-                        android:text="待收货"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="待收货" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,18 +164,35 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <ImageView
-                        android:src="@drawable/module_mine_assess"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
-                    <TextView
-                        android:text="待评价"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                    android:gravity="center"
+                    android:orientation="vertical">
 
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:src="@drawable/module_mine_assess" />
+
+                        <ImageView
+                            android:id="@+id/iv_assess_mark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone"
+                            android:src="@drawable/module_mycar_iv_mark"></ImageView>
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="待评价" />
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -132,25 +200,28 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <ImageView
-                        android:src="@drawable/module_mine_buy"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:src="@drawable/module_mine_buy" />
+
                     <TextView
-                        android:text="我的订单"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="我的订单" />
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
-                android:alpha="0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/white"
+                android:alpha="0"
                 android:text="xc"
+                android:textColor="@color/white"
                 android:textSize="500sp" />
 
         </LinearLayout>

@@ -13,8 +13,7 @@
             android:id="@+id/iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,21 +30,14 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/tv_mark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/module_fragment_item_mark"
-                    android:gravity="center"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="2dp"
-                    android:text="1"
-                    android:textColor="#ff0000"
-                    android:textSize="9sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+              <ImageView
+                  android:id="@+id/iv_mycar_mark"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="3dp"
+                  android:layout_marginLeft="15dp"
+                  android:src="@drawable/module_mycar_iv_mark"
+                  android:visibility="gone"></ImageView>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

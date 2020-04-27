@@ -13,6 +13,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -39,6 +40,7 @@ public class DrawbackFragment extends Fragment {
     private RecyclerView rv_drawback;
     private List<Goods> goods=new ArrayList();
     private OrderGoodsRecyclerViewAdapter adapter;
+    private LinearLayout ll_tip;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class DrawbackFragment extends Fragment {
     }
     private void init(View view){
         rv_drawback=view.findViewById(R.id.rv_drawback);
+        ll_tip=view.findViewById(R.id.ll_tip);
         adapter=new OrderGoodsRecyclerViewAdapter(getContext(),goods,handler);
         rv_drawback.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_drawback.setAdapter(adapter);
@@ -76,14 +79,25 @@ public class DrawbackFragment extends Fragment {
             }
         });
     }
-    public void deleteData(int position){
+    public void deleteData(final int position){
         Map<String, String> map = new HashMap<>();
         map.put("id", String.valueOf(goods.get(position).getId()));
         RequestParams params = new RequestParams(map);
         RequestParamConfig.deleteOrder(params, new ResponseCallback() {
             @Override
             public void onSuccess(Object responseObj) {
-                handler.sendEmptyMessage(1);
+                Gson gson = new Gson();
+                Type type = new TypeToken<ServerResult>() {}.getType();
+                ServerResult result = gson.fromJson(responseObj.toString(), type);
+                if (result.getRetCode()==0){
+                    goods.remove(position);
+                    adapter.notifyDataSetChanged();
+                    if (goods.size()>0){
+                        ll_tip.setVisibility(View.GONE);
+                    }else {
+                        ll_tip.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -102,10 +116,13 @@ public class DrawbackFragment extends Fragment {
                     Type type = new TypeToken<ServerResult<List<Goods>>>() {}.getType();
                     ServerResult<List<Goods>> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode()==0){
-                        if (result.getData()!=null){
-                            goods.clear();
-                            goods.addAll(result.getData());
-                            adapter.notifyDataSetChanged();
+                        goods.clear();
+                        goods.addAll(result.getData());
+                        adapter.notifyDataSetChanged();
+                        if (goods.size() > 0) {
+                            ll_tip.setVisibility(View.GONE);
+                        } else {
+                            ll_tip.setVisibility(View.VISIBLE);
                         }
                     }
                     break;

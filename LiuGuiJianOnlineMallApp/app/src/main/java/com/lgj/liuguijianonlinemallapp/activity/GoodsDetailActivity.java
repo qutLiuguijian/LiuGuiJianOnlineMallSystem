@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
 import com.lgj.liuguijianonlinemallapp.adapter.AssessRecyclerViewAdapter;
+import com.lgj.liuguijianonlinemallapp.bean.Gassess;
 import com.lgj.liuguijianonlinemallapp.bean.Goods;
 import com.lgj.liuguijianonlinemallapp.bean.ServerResult;
 import com.lgj.liuguijianonlinemallapp.bean.User;
@@ -54,7 +55,7 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     private int count = 1;
     private Goods goods;
     private AssessRecyclerViewAdapter adapter;
-    private List<String> list = new ArrayList<>();
+    private List<Gassess> list = new ArrayList<>();
     private List<Goods> goodsChecked = new ArrayList<>();
     private int flag = 0;//0 默认 1 购买 2 加入购物车
 
@@ -64,6 +65,24 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         setContentView(R.layout.module_activity_goods_detail);
         init();
         loadData();
+        loadAssess();
+    }
+
+    private void loadAssess() {
+        Map<String, String> map = new HashMap<>();
+        map.put("gid", String.valueOf(getIntent().getIntExtra("id", -1)));
+        RequestParams params = new RequestParams(map);
+        RequestParamConfig.getAssess(params, new ResponseCallback() {
+            @Override
+            public void onSuccess(Object responseObj) {
+                handler.obtainMessage(2, responseObj).sendToTarget();
+            }
+
+            @Override
+            public void onFailure(OkHttpException failuer) {
+                Toast.makeText(GoodsDetailActivity.this, failuer.getMsg(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadData() {
@@ -91,9 +110,6 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         btn_car = findViewById(R.id.btn_car);
         btn_buy.setOnClickListener(this);
         btn_car.setOnClickListener(this);
-        for (int i = 0; i < 100; i++) {
-            list.add("hhh" + i);
-        }
         rv_assess = findViewById(R.id.rv_assess);
         adapter = new AssessRecyclerViewAdapter(GoodsDetailActivity.this, list);
         rv_assess.setLayoutManager(new LinearLayoutManager(GoodsDetailActivity.this));
@@ -128,6 +144,22 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     ServerResult result1 = gson1.fromJson(msg.obj.toString(), type1);
                     Toast.makeText(GoodsDetailActivity.this, result1.getMessage(), Toast.LENGTH_SHORT).show();
                     break;
+                case 2:
+                    Gson gson2 = new Gson();
+                    Type type2 = new TypeToken<ServerResult<List<Gassess>>>() {
+                    }.getType();
+                    ServerResult<List<Gassess>> result2 = gson2.fromJson(msg.obj.toString(), type2);
+                    if (result2.getRetCode()==0){
+                        if (list!=null&&list.size()>0){
+                            list.clear();
+                        }
+                        if (result2.getData()!=null&&result2.getData().size()>0){
+                            list.addAll(result2.getData());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    break;
+
             }
         }
     };
@@ -136,9 +168,14 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==200){
+        if (requestCode == 200) {
             if (flag == 1) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(GoodsDetailActivity.this, BalanceActivity.class);
+                intent.putExtra("from", "detail");
+                goods.setCount(count);
+                goodsChecked.clear();
+                goodsChecked.add(goods);
+                intent.putExtra("list", (Serializable) goodsChecked);
                 startActivity(intent);
             } else if (flag == 2) {
                 Map<String, String> map = new HashMap<>();
@@ -219,16 +256,16 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
         btn_define.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (popupWindow!=null){
+                if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
                 String isReLogin = PreferencesUtils.getString(GoodsDetailActivity.this, "isReLogin");
                 if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
                     Intent intent = new Intent(GoodsDetailActivity.this, LoginActivity.class);
-                    startActivityForResult(intent,200);
+                    startActivityForResult(intent, 200);
                 } else {
                     if (flag == 1) {
-                        Intent intent = new Intent(GoodsDetailActivity.this,BalanceActivity.class);
+                        Intent intent = new Intent(GoodsDetailActivity.this, BalanceActivity.class);
                         intent.putExtra("from", "detail");
                         goods.setCount(Integer.parseInt(tv_pop_count.getText().toString()));
                         goodsChecked.clear();
