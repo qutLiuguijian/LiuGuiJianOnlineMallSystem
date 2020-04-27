@@ -43,6 +43,9 @@ public class MainAppController {
     @Autowired
     private IThirdclassifyService thirdclassifyService;
 
+    @Autowired
+    private IGassessService gassessService;
+
     @RequestMapping(value = "getGoodsByClassify", method = RequestMethod.POST)
     @ApiOperation(value = "通过分类查询商品列表", notes = "")
     public ServerResult getGoodsByClassify(@RequestParam String classify) {
@@ -60,7 +63,34 @@ public class MainAppController {
         List<Goods> list = goodsService.list(queryWrapper);
         return new ServerResult(0, "", list);
     }
-
+    @RequestMapping(value = "getGoodsById", method = RequestMethod.POST)
+    @ApiOperation(value = "通过id查询商品", notes = "")
+    public ServerResult getGoodsById(@RequestParam Integer id) {
+        Goods goods = goodsService.getById(id);
+        return new ServerResult(0, "", goods);
+    }
+    @RequestMapping(value = "addAssess", method = RequestMethod.POST)
+    @ApiOperation(value = "通过id查询商品", notes = "")
+    public ServerResult addAssess(@RequestParam Integer gid,@RequestParam String uname,String assess) {
+        Gassess gassess=new Gassess();
+        gassess.setGId(gid);
+        gassess.setUname(uname);
+        if (assess==null||assess.isEmpty()){
+            gassess.setAssess("此用户未填写评价");
+        }else {
+            gassess.setAssess(assess);
+        }
+        gassessService.save(gassess);
+        return new ServerResult(0, "评价成功");
+    }
+    @RequestMapping(value = "getAssess", method = RequestMethod.POST)
+    @ApiOperation(value = "通过id查询商品评价", notes = "")
+    public ServerResult addAssess(@RequestParam Integer gid) {
+        QueryWrapper<Gassess> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("g_id", gid);
+        List<Gassess> list = gassessService.list(queryWrapper);
+        return new ServerResult(0, "",list);
+    }
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ApiOperation(value = "注册用户", notes = "")
     public ServerResult register(@RequestParam String username, @RequestParam String password, @RequestParam String phone) {
@@ -171,7 +201,30 @@ public class MainAppController {
         List<Mycar> carGoods = mycarService.getCarGoods(username);
         return new ServerResult(0, "", carGoods);
     }
+    @RequestMapping(value = "isShowMark", method = RequestMethod.POST)
+    @ApiOperation(value = "是否显示购物车角标", notes = "")
+    public ServerResult isShowMark(@RequestParam String username) {
+        QueryWrapper<Mycar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uname", username);
+        List<Mycar> carGoods = mycarService.list(queryWrapper);
+        if(carGoods==null||carGoods.size()==0){
+            return new ServerResult(1, "不显示");
+        }else {
+            return new ServerResult(0, "显示");
+        }
 
+    }
+    @RequestMapping(value = "deleteCar", method = RequestMethod.POST)
+    @ApiOperation(value = "根据id删除购物车一条单子", notes = "")
+    public ServerResult deleteCar(@RequestParam Integer id) {
+        boolean b = mycarService.removeById(id);
+        if (b){
+            return new ServerResult(0, "删除成功");
+        }else {
+            return new ServerResult(1, "删除失败");
+        }
+
+    }
     @RequestMapping(value = "buyFromCar", method = RequestMethod.POST)
     @ApiOperation(value = "购物车下单", notes = "")
     public ServerResult buyFromCar(@RequestParam String username
