@@ -15,6 +15,7 @@ import java.util.List;
  * @since 2020-04-15
  */
 public interface IGoodsorderService extends IService<Goodsorder> {
-    List<Goods> getOrderByState(String uname, int state);
-    List<Goods> getOrderAll(String uname);
+    List<Goodsorder> getOrderByState(String uname, int state);
+    List<Goodsorder> getOrderAll(String uname);
+    List<Goodsorder> getSendOrder();
 }

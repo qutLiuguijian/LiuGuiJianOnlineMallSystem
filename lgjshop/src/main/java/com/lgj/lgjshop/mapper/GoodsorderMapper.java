@@ -20,6 +20,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface GoodsorderMapper extends BaseMapper<Goodsorder> {
-    List<Goods> getOrderByState(@Param("uname") String uname, @Param("state")int state);
-    List<Goods> getOrderAll(String uname);
+    List<Goodsorder> getOrderByState(@Param("uname") String uname, @Param("state")int state);
+    List<Goodsorder> getOrderAll(String uname);
+    List<Goodsorder> getSendOrder();
 }

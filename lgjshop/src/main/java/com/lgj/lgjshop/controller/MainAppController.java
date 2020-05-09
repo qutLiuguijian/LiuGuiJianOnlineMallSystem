@@ -323,7 +323,7 @@ public class MainAppController {
     @RequestMapping(value = "getAllOrderByUAS", method = RequestMethod.POST)
     @ApiOperation(value = "通过用户名和状态获得全部下单", notes = "")
     public ServerResult getAllOrderByUAS(@RequestParam String uname, int state) {
-        List<Goods> orderAll;
+        List<Goodsorder> orderAll;
         if (state < 0) {
             orderAll = goodsorderService.getOrderAll(uname);
         } else {
