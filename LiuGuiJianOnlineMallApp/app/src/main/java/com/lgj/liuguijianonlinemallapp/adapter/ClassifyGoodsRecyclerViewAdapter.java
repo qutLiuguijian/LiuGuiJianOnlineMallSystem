@@ -57,7 +57,7 @@ public class ClassifyGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         final Goods goods = list.get(i);
-        Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_classify_goods);
+        Glide.with(context).load(goods.getGimage().replace("localhost","10.0.2.2")).into(myViewHolder.iv_classify_goods);
         myViewHolder.tv_classify_name.setText(goods.getGname());
         myViewHolder.tv_classify_price.setText(goods.getGprice() + "");
     }

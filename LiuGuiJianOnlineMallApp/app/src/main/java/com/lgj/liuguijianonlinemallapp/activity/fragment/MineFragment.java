@@ -41,6 +41,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private CollapsingToolbarLayout ctl_loginName;
     private LinearLayout ll_all, ll_pay, ll_send, ll_takeover, ll_assess;
     private ImageView iv_pay_mark, iv_send_mark, iv_takeover_mark, iv_assess_mark;
+    private String isReLogin;
 
     @Nullable
     @Override
@@ -92,13 +93,33 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         PreferencesUtils.putBoolean(getContext(), "isShowSendMark", false);
         PreferencesUtils.putBoolean(getContext(), "isShowTekeMark", false);
         PreferencesUtils.putBoolean(getContext(), "isShowAssessMark", false);
-        final String isReLogin = PreferencesUtils.getString(getContext(), "isReLogin");
+        isReLogin = PreferencesUtils.getString(getContext(), "isReLogin");
         if (isReLogin != null && !isReLogin.isEmpty() && isReLogin.equals("no")) {
             String name = PreferencesUtils.getString(getContext(), "username");
             ctl_loginName.setTitle(name);
             loadMark();
         } else {
             ctl_loginName.setTitle("登录/注册");
+        }
+        if (PreferencesUtils.getBoolean(getContext(), "isShowPayMark", false)) {
+            iv_pay_mark.setVisibility(View.VISIBLE);
+        } else {
+            iv_pay_mark.setVisibility(View.GONE);
+        }
+        if (PreferencesUtils.getBoolean(getContext(), "isShowSendMark", false)) {
+            iv_send_mark.setVisibility(View.VISIBLE);
+        } else {
+            iv_send_mark.setVisibility(View.GONE);
+        }
+        if (PreferencesUtils.getBoolean(getContext(), "isShowTekeMark", false)) {
+            iv_takeover_mark.setVisibility(View.VISIBLE);
+        } else {
+            iv_takeover_mark.setVisibility(View.GONE);
+        }
+        if (PreferencesUtils.getBoolean(getContext(), "isShowAssessMark", false)) {
+            iv_assess_mark.setVisibility(View.VISIBLE);
+        } else {
+            iv_assess_mark.setVisibility(View.GONE);
         }
         iv_toLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +187,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(OkHttpException failuer) {
-                Log.i("hhhhhhhhhhh",failuer.getMsg());
+                Log.i("hhhhhhhhhhh", failuer.getMsg());
                 Toast.makeText(getContext(), failuer.getMsg(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -176,29 +197,59 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_all:
-                Intent intent = new Intent(getActivity(), OrderActivity.class);
-                intent.putExtra("tag", 0);
-                startActivity(intent);
+                if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 100);
+                } else {
+                    Intent intent = new Intent(getActivity(), OrderActivity.class);
+                    intent.putExtra("tag", 0);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.ll_pay:
-                Intent intent1 = new Intent(getActivity(), OrderActivity.class);
-                intent1.putExtra("tag", 1);
-                startActivity(intent1);
+                if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 100);
+                } else {
+                    Intent intent1 = new Intent(getActivity(), OrderActivity.class);
+                    intent1.putExtra("tag", 1);
+                    startActivity(intent1);
+                }
+
                 break;
             case R.id.ll_send:
-                Intent intent2 = new Intent(getActivity(), OrderActivity.class);
-                intent2.putExtra("tag", 2);
-                startActivity(intent2);
+                if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 100);
+                } else {
+                    Intent intent2 = new Intent(getActivity(), OrderActivity.class);
+                    intent2.putExtra("tag", 2);
+                    startActivity(intent2);
+                }
+
                 break;
             case R.id.ll_assess:
-                Intent intent3 = new Intent(getActivity(), OrderActivity.class);
-                intent3.putExtra("tag", 4);
-                startActivity(intent3);
+                if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 100);
+                } else {
+                    Intent intent3 = new Intent(getActivity(), OrderActivity.class);
+                    intent3.putExtra("tag", 4);
+                    startActivity(intent3);
+                }
+
                 break;
             case R.id.ll_takeover:
-                Intent intent4 = new Intent(getActivity(), OrderActivity.class);
-                intent4.putExtra("tag", 3);
-                startActivity(intent4);
+                if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 100);
+                } else {
+                    Intent intent4 = new Intent(getActivity(), OrderActivity.class);
+                    intent4.putExtra("tag", 3);
+                    startActivity(intent4);
+                }
+
                 break;
         }
     }

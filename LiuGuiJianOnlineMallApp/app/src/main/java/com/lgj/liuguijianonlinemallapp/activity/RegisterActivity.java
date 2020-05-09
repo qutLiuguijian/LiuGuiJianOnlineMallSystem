@@ -1,5 +1,6 @@
 package com.lgj.liuguijianonlinemallapp.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +27,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends Activity implements View.OnClickListener {
     private EditText et_phone, et_usename, et_password;
     private Button btn_register;
     private ImageView iv_back;

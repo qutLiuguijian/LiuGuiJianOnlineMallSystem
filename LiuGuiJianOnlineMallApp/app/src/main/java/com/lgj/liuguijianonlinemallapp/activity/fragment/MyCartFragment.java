@@ -48,7 +48,7 @@ import java.util.Map;
 public class MyCartFragment extends Fragment implements View.OnClickListener {
     private RecyclerView rv_goods;
     private CheckBox checkbox_all;
-    private TextView tv_allpay;
+    private TextView tv_allpay,tv_tip;
     private Button btn_topay;
     private LinearLayout ll_tip;
     private RelativeLayout rl_footer;
@@ -70,9 +70,19 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         String isReLogin = PreferencesUtils.getString(getActivity(), "isReLogin");
         if (isReLogin == null || isReLogin.isEmpty() || isReLogin.equals("yes")) {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivityForResult(intent, 300);
+
+            ll_tip.setVisibility(View.VISIBLE);
+            tv_tip.setText("还未登录,请点击去登录");
+            tv_tip.setClickable(true);
+            tv_tip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent, 300);
+                }
+            });
         } else {
+            tv_tip.setClickable(false);
             bind();
             loadData();
         }
@@ -132,6 +142,8 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
                                     }else {
                                         rl_footer.setVisibility(View.GONE);
                                         ll_tip.setVisibility(View.VISIBLE);
+                                        tv_tip.setText("购物车还是空的");
+                                        tv_tip.setClickable(false);
                                     }
                                 }
                             }
@@ -163,6 +175,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         btn_topay = view.findViewById(R.id.btn_topay);
         rl_footer = view.findViewById(R.id.rl_footer);
         ll_tip = view.findViewById(R.id.ll_tip);
+        tv_tip = view.findViewById(R.id.tv_tip);
     }
 
     @Override

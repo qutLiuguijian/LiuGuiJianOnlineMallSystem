@@ -1,7 +1,10 @@
 package com.lgj.liuguijianonlinemallapp.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Handler;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +65,13 @@ public class ClassifyListViewAdapter extends BaseExpandableListAdapter {
         view= LayoutInflater.from(context).inflate(R.layout.module_listview_item_classify,viewGroup,false);
         TextView tv_classify=view.findViewById(R.id.tv_classify);
         tv_classify.setText(list.get(i).getName());
+        if (list.get(i).isSelected()){
+            tv_classify.setTextSize(TypedValue.COMPLEX_UNIT_SP,17);
+            tv_classify.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            tv_classify.setBackgroundColor(context.getResources().getColor(R.color.white));
+        }else {
+            tv_classify.setBackgroundColor(context.getResources().getColor(R.color.gray2));
+        }
         return view;
     }
 
@@ -70,6 +80,16 @@ public class ClassifyListViewAdapter extends BaseExpandableListAdapter {
         view= LayoutInflater.from(context).inflate(R.layout.module_listview_item_classify,viewGroup,false);
         TextView tv_classify=view.findViewById(R.id.tv_classify);
         tv_classify.setText(list.get(i).getChildName().get(i1).getName());
+        View view_select=view.findViewById(R.id.view_select);
+        tv_classify.setBackgroundColor(context.getResources().getColor(R.color.white));
+        if (list.get(i).getChildName().get(i1).isSelected()){
+            view_select.setVisibility(View.VISIBLE);
+            tv_classify.setTextColor(context.getResources().getColor(R.color.red));
+        }else {
+            view_select.setVisibility(View.INVISIBLE);
+            tv_classify.setTextColor(context.getResources().getColor(R.color.black));
+        }
+
         return view;
     }
 

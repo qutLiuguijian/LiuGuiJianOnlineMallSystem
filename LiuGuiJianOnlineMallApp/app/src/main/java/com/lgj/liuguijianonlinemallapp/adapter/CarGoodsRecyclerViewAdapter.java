@@ -88,7 +88,7 @@ public class CarGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
                 handler.sendEmptyMessage(1);
             }
         });
-        Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_car_goods);
+        Glide.with(context).load(goods.getGimage().replace("localhost","10.0.2.2")).into(myViewHolder.iv_car_goods);
         myViewHolder.tv_car_name.setText(goods.getGname());
         myViewHolder.tv_car_price.setText(goods.getGprice() + "");
         myViewHolder.tv_car_count.setText(goods.getCount() + "");

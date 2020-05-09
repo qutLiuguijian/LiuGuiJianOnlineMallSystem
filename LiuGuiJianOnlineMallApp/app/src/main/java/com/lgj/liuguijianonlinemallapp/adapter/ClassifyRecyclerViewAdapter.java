@@ -59,6 +59,13 @@ public class ClassifyRecyclerViewAdapter extends RecyclerView.Adapter {
         final Classify classify = list.get(i);
         myViewHolder.tv_classify.setText(classify.getName());
 
+        if (classify.isSelected()) {
+            myViewHolder.tv_classify.setTextColor(context.getResources().getColor(R.color.red));
+            myViewHolder.tv_classify.setBackgroundColor(context.getResources().getColor(R.color.red2));
+        } else {
+            myViewHolder.tv_classify.setTextColor(context.getResources().getColor(R.color.black));
+            myViewHolder.tv_classify.setBackgroundColor(context.getResources().getColor(R.color.gray2));
+        }
     }
 
     @Override
@@ -72,6 +79,7 @@ public class ClassifyRecyclerViewAdapter extends RecyclerView.Adapter {
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
             tv_classify = itemView.findViewById(R.id.tv_classify);
+
             if (onitemClickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

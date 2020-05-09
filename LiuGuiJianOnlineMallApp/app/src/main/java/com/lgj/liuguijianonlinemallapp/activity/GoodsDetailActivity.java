@@ -128,8 +128,12 @@ public class GoodsDetailActivity extends Activity implements View.OnClickListene
                     ServerResult<Goods> result = gson.fromJson(msg.obj.toString(), type);
                     if (result.getRetCode() == 0) {
                         goods = result.getData();
+                        List<String> img=new ArrayList<>();
+                        for (int i=0;i<goods.getImgurl().size();i++){
+                            img.add(goods.getImgurl().get(i).replace("localhost","10.0.2.2"));
+                        }
                         banner_img.setImageLoader(new GlideImageLoader());
-                        banner_img.setImages(goods.getImgurl());
+                        banner_img.setImages(img);
                         banner_img.setBannerStyle(BannerConfig.NUM_INDICATOR);
                         banner_img.setIndicatorGravity(BannerConfig.RIGHT);
                         banner_img.start();

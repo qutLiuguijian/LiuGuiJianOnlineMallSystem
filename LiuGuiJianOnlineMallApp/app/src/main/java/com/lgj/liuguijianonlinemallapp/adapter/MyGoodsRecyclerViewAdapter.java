@@ -51,7 +51,7 @@ public class MyGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         Goods goods = list.get(i);
-        Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_img);
+        Glide.with(context).load(goods.getGimage().replace("localhost","10.0.2.2")).into(myViewHolder.iv_img);
         myViewHolder.tv_desc.setText(goods.getGdesc());
         myViewHolder.tv_price.setText(goods.getGprice()+"");
     }

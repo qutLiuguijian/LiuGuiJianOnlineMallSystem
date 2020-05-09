@@ -9,6 +9,7 @@ public class Classify implements Serializable {
     private Integer id;
     private String name;
     public List<Classify> childName;
+    public boolean isSelected=false;
 
     public Integer getId() {
         return id;
@@ -32,5 +33,13 @@ public class Classify implements Serializable {
 
     public void setChildName(List<Classify> childName) {
         this.childName = childName;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

@@ -1,5 +1,6 @@
 package com.lgj.liuguijianonlinemallapp.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,9 +18,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lgj.liuguijianonlinemallapp.R;
 import com.lgj.liuguijianonlinemallapp.activity.AddressActivity;
+import com.lgj.liuguijianonlinemallapp.activity.GoodsDetailActivity;
 import com.lgj.liuguijianonlinemallapp.adapter.ClassifyGoodsRecyclerViewAdapter;
 import com.lgj.liuguijianonlinemallapp.adapter.ClassifyListViewAdapter;
 import com.lgj.liuguijianonlinemallapp.adapter.ClassifyRecyclerViewAdapter;
+import com.lgj.liuguijianonlinemallapp.adapter.MyGoodsRecyclerViewAdapter;
 import com.lgj.liuguijianonlinemallapp.bean.Classify;
 import com.lgj.liuguijianonlinemallapp.bean.Goods;
 import com.lgj.liuguijianonlinemallapp.bean.ServerResult;
@@ -72,13 +75,18 @@ public class ClassifyFragment extends Fragment {
                     for (int x = 0; x < elv_first_second
                             .getExpandableListAdapter().getGroupCount(); x++) {
                         if (i != x) {// 关闭其他分组
+                            classifies.get(x).setSelected(false);
                             elv_first_second.collapseGroup(x);
                         } else {
+                            classifies.get(x).setSelected(true);
                             elv_first_second.expandGroup(x);
                         }
                     }
                     classifies2.clear();
-                    classifies2 .addAll(classifies.get(i).getChildName().get(0).getChildName());
+                    classifies.get(i).getChildName().get(0).setSelected(true);
+                    classifies.get(i).getChildName().get(0).getChildName().get(0).setSelected(true);
+                    classifies2.addAll(classifies.get(i).getChildName().get(0).getChildName());
+                    listViewAdapter.notifyDataSetChanged();
                     recyclerViewAdapter.notifyDataSetChanged();
                     loadGoods(classifies2.get(0).getName());
                 }
@@ -90,7 +98,16 @@ public class ClassifyFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 classifies2.clear();
-                classifies2 .addAll(classifies.get(i).getChildName().get(i1).getChildName());
+                for (int x = 0; x < classifies.get(i).getChildName().size(); x++) {
+                    if (x == i1) {
+                        classifies.get(i).getChildName().get(x).setSelected(true);
+                    } else {
+                        classifies.get(i).getChildName().get(x).setSelected(false);
+                    }
+                }
+                classifies.get(i).getChildName().get(i1).getChildName().get(0).setSelected(true);
+                classifies2.addAll(classifies.get(i).getChildName().get(i1).getChildName());
+                listViewAdapter.notifyDataSetChanged();
                 recyclerViewAdapter.notifyDataSetChanged();
                 loadGoods(classifies2.get(0).getName());
                 return true;
@@ -99,6 +116,14 @@ public class ClassifyFragment extends Fragment {
         recyclerViewAdapter.setOnitemClickListener(new ClassifyRecyclerViewAdapter.OnitemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
+                for (int x = 0; x < classifies2.size(); x++) {
+                    if (x == postion) {
+                        classifies2.get(x).setSelected(true);
+                    } else {
+                        classifies2.get(x).setSelected(false);
+                    }
+                }
+                recyclerViewAdapter.notifyDataSetChanged();
                 loadGoods(classifies2.get(postion).getName());
             }
         });
@@ -118,9 +143,12 @@ public class ClassifyFragment extends Fragment {
                     classifies.clear();
                     classifies = result.getData();
                     listViewAdapter = new ClassifyListViewAdapter(getContext(), classifies);
+                    classifies.get(0).setSelected(true);
+                    classifies.get(0).getChildName().get(0).setSelected(true);
                     elv_first_second.setAdapter(listViewAdapter);
                     elv_first_second.expandGroup(0);
                     classifies2.clear();
+                    classifies.get(0).getChildName().get(0).getChildName().get(0).setSelected(true);
                     classifies2.addAll(classifies.get(0).getChildName().get(0).getChildName());
                     recyclerViewAdapter.notifyDataSetChanged();
                     loadGoods(classifies.get(0).getChildName().get(0).getName());
@@ -149,7 +177,7 @@ public class ClassifyFragment extends Fragment {
                     if (goods != null && goods.size() > 0) {
                         goods.clear();
                     }
-                    goods .addAll( result.getData());
+                    goods.addAll(result.getData());
                     goodsRecyclerViewAdapter.notifyDataSetChanged();
                 }
             }
@@ -165,12 +193,20 @@ public class ClassifyFragment extends Fragment {
         elv_first_second = view.findViewById(R.id.elv_first_second);
         rv_third = view.findViewById(R.id.rv_third);
         recyclerViewAdapter = new ClassifyRecyclerViewAdapter(getContext(), classifies2);
-        rv_third.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        rv_third.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_third.setAdapter(recyclerViewAdapter);
         rv_content = view.findViewById(R.id.rv_content);
         goodsRecyclerViewAdapter = new ClassifyGoodsRecyclerViewAdapter(getContext(), goods);
         rv_content.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_content.setAdapter(goodsRecyclerViewAdapter);
+        goodsRecyclerViewAdapter.setOnitemClickListener(new ClassifyGoodsRecyclerViewAdapter.OnitemClickListener() {
+            @Override
+            public void onItemClick(View view, int postion) {
+                Intent intent=new Intent(getActivity(), GoodsDetailActivity.class);
+                intent.putExtra("id",goods.get(postion).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

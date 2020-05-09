@@ -8,6 +8,8 @@
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:groupIndicator="@null"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:background="@color/gray2"></ExpandableListView>
 
     <LinearLayout

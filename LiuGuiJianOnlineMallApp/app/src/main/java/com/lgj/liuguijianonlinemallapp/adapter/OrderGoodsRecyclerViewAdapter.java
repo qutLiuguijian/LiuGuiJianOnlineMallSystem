@@ -59,7 +59,7 @@ public class OrderGoodsRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         final Goods goods = list.get(i);
-        Glide.with(context).load(goods.getGimage()).into(myViewHolder.iv_order_goods);
+        Glide.with(context).load(goods.getGimage().replace("localhost","10.0.2.2")).into(myViewHolder.iv_order_goods);
         myViewHolder.tv_order_name.setText(goods.getGname());
         myViewHolder.tv_order_price.setText(goods.getGprice() + "");
         myViewHolder.tv_order_count.setText("x " + goods.getCount() + "");

@@ -174,6 +174,9 @@ public class TransitActivity extends Activity {
                     } else {
                         PreferencesUtils.putBoolean(TransitActivity.this, "isShowMark", false);
                         PreferencesUtils.putString(TransitActivity.this, "isReLogin", "yes");
+                        Intent intent = new Intent(TransitActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                     PreferencesUtils.putString(TransitActivity.this, "isFirstStart", "yes");
                     break;
