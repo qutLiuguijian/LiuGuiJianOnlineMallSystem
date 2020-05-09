@@ -24,12 +24,17 @@ public class GoodsorderServiceImpl extends ServiceImpl<GoodsorderMapper, Goodsor
     @Autowired
     GoodsorderMapper mapper;
     @Override
-    public List<Goods> getOrderByState(String uname, int state) {
+    public List<Goodsorder> getOrderByState(String uname, int state) {
         return mapper.getOrderByState(uname,state);
     }
 
     @Override
-    public List<Goods> getOrderAll(String uname) {
+    public List<Goodsorder> getOrderAll(String uname) {
         return mapper.getOrderAll(uname);
+    }
+
+    @Override
+    public List<Goodsorder> getSendOrder() {
+        return mapper.getSendOrder();
     }
 }

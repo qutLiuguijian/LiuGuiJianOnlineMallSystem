@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .center-in-center {
+            position: absolute;
+            top: 30%;
+            left: 40%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588766354055&di=7b53dd5b941185efd5f4e753ea0294a9&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20190730%2F22%2F1564496916-cQMuBJnIZA.jpg");
+            background-repeat:no-repeat ;
+            background-size:100% 100%;
+            background-attachment: fixed;
+        }
+    </style>
+
+</head>
+<body >
+<div >
+    <div class="center-in-center">
+        <form class="form-horizontal" role="form" action="/service/index" method="get"
+              style="width: 500px;margin: auto;">
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" style="width: 200px" id="username" name="username"
+                           placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="password" name="password" style="width: 200px"
+                           placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <span style="font-size: 12px;color: red" th:text="${error}" aria-describedby="basic-addon0"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
