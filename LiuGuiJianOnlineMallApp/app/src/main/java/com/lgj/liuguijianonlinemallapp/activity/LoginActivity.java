@@ -47,7 +47,10 @@ public class LoginActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==REQ_FLAG){
-            et_name.setText(data.getStringExtra("uname"));
+            if (data!=null){
+                et_name.setText(data.getStringExtra("uname"));
+            }
+
         }
     }
 
@@ -105,6 +108,7 @@ public class LoginActivity extends Activity {
                     Gson gson = new Gson();
                     Type type = new TypeToken<ServerResult<User>>() {}.getType();
                     ServerResult<User> result = gson.fromJson(msg.obj.toString(), type);
+                    Toast.makeText(LoginActivity.this,result.getMessage(),Toast.LENGTH_SHORT).show();
                     if (result.getRetCode()==0){
                         User user=result.getData();
                         PreferencesUtils.putString(LoginActivity.this,"isReLogin","no");

@@ -215,6 +215,8 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
                         }else {
                             rl_footer.setVisibility(View.GONE);
                             ll_tip.setVisibility(View.VISIBLE);
+                            tv_tip.setText("购物车还是空的");
+                            tv_tip.setClickable(false);
                         }
                     }
                     break;

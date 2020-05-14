@@ -36,6 +36,9 @@ public class TransitActivity extends Activity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_PHONE_STATE
     };
     // 声明一个集合，在后面的代码中用来存储用户拒绝授权的权

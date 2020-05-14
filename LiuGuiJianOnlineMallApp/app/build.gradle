@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
+// 添加插件
+apply plugin: 'com.mob.sdk'
+// 在MobSDK的扩展中注册SMSSDK的相关信息
+MobSDK {
+    appKey "244e915baae1a"
+    appSecret "b5eb7df4657dbde9b36b673cef463a3e"
 
+    SMSSDK {
+//        gui false
+    }
+}
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
