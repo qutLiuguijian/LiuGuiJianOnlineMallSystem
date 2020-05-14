@@ -116,13 +116,21 @@ public class MainAppController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ApiOperation(value = "用户名密码登录", notes = "")
     public ServerResult login(@RequestParam String username, @RequestParam String password) throws Exception {
+        List<User> listEeeor =new ArrayList<>();
+        User user=new User();
+        listEeeor.add(user);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         queryWrapper.eq("password", password);
         List<User> list = userService.list(queryWrapper);
         if (list.size() == 1) {
-            redisService.set(username, "isLogin", 3 * 24 * 60 * 60);
-            return new ServerResult(0, "登录成功", list.get(0));
+            if(list.get(0).getLevel().equals("普通用户")){
+                redisService.set(username, "isLogin", 3 * 24 * 60 * 60);
+                return new ServerResult(0, "登录成功", list.get(0));
+            }else{
+                return new ServerResult(1, "用户角色不匹配请更换用户登录!",listEeeor.get(0));
+            }
+
         } else {
             boolean isFlag = true;
             List<User> userList = userService.list();
@@ -130,23 +138,26 @@ public class MainAppController {
                 if (username.equals(u.getUsername())) {
                     isFlag = false;
                     if (!password.equals(u.getPassword())) {
-                        return new ServerResult(1, "密码错误,请重新填写或者选择其他登录方式");
+                        return new ServerResult(1, "密码错误,请重新填写",listEeeor.get(0));
                     }
                 }
             }
             if (isFlag) {
-                return new ServerResult(1, "用户不存在，请前往注册!");
+                return new ServerResult(1, "用户不存在，请前往注册!",listEeeor.get(0));
             }
         }
-        return new ServerResult(1, "用户名或密码错误!");
+        return new ServerResult(1, "用户名或密码错误!",listEeeor.get(0));
     }
 
     @RequestMapping(value = "isReLogin", method = RequestMethod.POST)
     @ApiOperation(value = "是否需要重新登录登录", notes = "")
     public ServerResult isReLogin(@RequestParam String username) throws Exception {
+        List<User> listEeeor =new ArrayList<>();
+        User user=new User();
+        listEeeor.add(user);
         String s = redisService.get(username);
         if (s == null || s.isEmpty()) {
-            return new ServerResult(1, "需要重新登录!");
+            return new ServerResult(1, "需要重新登录!",listEeeor.get(0));
         } else {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("username", username);
